@@ -1,0 +1,352 @@
+/*
+xkk1 Theme core CSS
+Copyright (C) 2024  [xkk1](https://github.com/xkk1)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+:root {
+    font-size: 16px;
+    --title-font-size: 2.5rem;
+    --h1-font-size: 2rem;
+    --h2-font-size: 1.75rem;
+    --h3-font-size: 1.5rem;
+    --h4-font-size: 1.25rem;
+    --h5-font-size: 1rem;
+    --h6-font-size: 0.75rem;
+    --p-font-size: 1rem;
+    --broder-radius: 0.5rem;
+    --code-font-size: 1rem;
+    --code-font-family: "Fira Code", monospace;
+    --font-family: "Resource Han Rounded CN", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans;
+    --backdrop-filter: blur(0.125rem);
+    /* --background-color-blur-white: rgba(255, 255, 255, 0.8);
+    --background-color-blur-black: rgba(0, 0, 0, 0.8); */
+}
+
+/* [data-theme="dark"] 默认深色主题 */
+[data-theme="dark"] {
+    --color: #ccc;
+    --color-grey: #3c3c3c;
+    --background-color: #181818;
+    --background-color-grey: #242424;
+    /* --box-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.25); */
+    --box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);
+
+    --background-color-blur: rgba(66, 66, 66, 0.4);
+    /* --background-color-blur: rgba(255, 255, 255, 0.4); */
+    --a-color: #40a6ff;
+}
+
+[data-theme="light"] {
+    --color: #3b3b3b;
+    --color-grey: #909090;
+    --background-color: #f8f8f8;
+    --background-color-grey: #e6e6e6;
+    /* --box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25); */
+    --box-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.4);
+
+    /* --background-color-blur: rgba(0, 0, 0, 0.4); */
+    --background-color-blur: rgba(200, 200, 200, 0.4);
+    --a-color: #005fb8;
+}
+
+html {
+    scroll-behavior: smooth;
+    height: 100%;
+}
+
+body {
+    background-color: var(--background-color);
+    font-family: var(--font-family);
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.main {
+    padding: 1rem;
+    margin: 0 auto;
+    max-width: 64rem;
+    overflow-x: hidden;
+    word-wrap: break-word;
+    background-color: var(--background-color);
+    border-radius: var(--broder-radius);
+    /* box-shadow: var(--box-shadow); */
+    font-family: var(--font-family);
+    font-size: var(--p-font-size);
+    color: var(--color);
+}
+
+.main .title,
+.main h1,
+.main h2,
+.main h3,
+.main h4,
+.main h5,
+.main h6 {
+    margin: 2rem 0 1rem 0;
+    padding: 0;
+    /* font-family: var(--font-family); */
+    font-weight: bold;
+    line-height: 1;
+}
+
+.main :first-child {
+    margin-top: 0;
+}
+
+.main :last-child {
+    margin-bottom: 0;
+}
+
+.main .title {
+    font-size: var(--title-font-size);
+    text-align: center;
+}
+
+.main p {
+    font-size: var(--p-font-size);
+}
+
+.main h1 {
+    font-size: var(--h1-font-size);
+}
+
+.main h2 {
+    font-size: var(--h2-font-size);
+}
+
+.main h3 {
+    font-size: var(--h3-font-size);
+}
+
+.main h4 {
+    font-size: var(--h4-font-size);
+}
+
+.main h5 {
+    font-size: var(--h5-font-size);
+}
+
+.main h6 {
+    font-size: var(--h6-font-size);
+}
+
+/* 引用 */
+.main blockquote {
+    margin: 1rem 0;
+    padding: 1rem;
+    border-left: 3px solid var(--color);
+    background-color: var(--background-color-grey);
+    border-radius: 0 var(--broder-radius) var(--broder-radius) 0;
+}
+
+/* 代码块 */
+.main code {
+    font-family: var(--code-font-family);
+    font-size: var(--code-font-size);
+    border-radius: var(--broder-radius);
+    box-shadow: var(--box-shadow);
+}
+
+/* 图像 */
+.main img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+/* 未解析的 Markdown */
+.markdown {
+    white-space: pre-wrap;
+}
+
+/* 代码 */
+pre>code {
+    height: 100%;
+}
+
+pre>div.tool-box {
+    position: absolute;
+    display: flex;
+    opacity: 0;
+    transition: opacity .2s;
+    flex-direction: row;
+    right: 0.5rem;
+    top: 0.5rem;
+    background-color: transparent;
+    pointer-events: none;
+}
+
+pre>div.tool-box.show-tool-box {
+    opacity: 1;
+}
+
+pre>div.tool-box>div {
+    flex: 1;
+    margin: 2px 4px;
+    padding: 2px 4px;
+    pointer-events: auto;
+    cursor: pointer;
+    font-family: var(--code-font-family);
+    
+    color: var(--color);
+    backdrop-filter: var(--backdrop-filter);
+    background-color: var(--background-color-blur);
+    border-radius: var(--broder-radius);
+}
+
+pre>div.tool-box>div.copy-success::after {
+    content: " ✔已复制";
+}
+
+pre.show-line-num {
+    position: relative;
+}
+
+pre.show-line-num>code.hljs {
+    padding-left: 3em;
+}
+
+pre.show-line-num>ol.line-num {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 0 0.5em 0 0;
+    margin: 0.5em 0 0 0;
+    width: 2em;
+    list-style: none;
+    text-align: right;
+    border-right: 2px solid var(--color-grey);
+    background-color: inherit;
+    font-size: var(--code-font-size);
+    font-family: var(--code-font-family);
+    backdrop-filter: var(--backdrop-filter);
+}
+
+/* 表格 */
+.main table {
+    max-width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+}
+
+.main table thead {
+    border-bottom: 1px solid var(--color);
+    background: var(--background-color-grey);
+}
+
+.main th,
+.main td {
+    padding: 0.5em 1em;
+    border: 1px solid var(--color);
+}
+
+.main th {
+    font-weight: bold;
+}
+
+.main tbody tr:nth-child(2n) {
+    background: var(--background-color-grey);
+}
+
+/* 链接 */
+.main a {
+    color: var(--a-color);
+    text-decoration: none;
+}
+
+.main a:hover {
+    text-decoration: underline;
+
+}
+
+/* 列表 */
+.main ul,
+.main ol {
+    padding-left: 2.5em;
+}
+
+/* 按钮 */
+.main button,
+.main input[type="button"] {
+    padding: 0.25rem 0.5rem;
+    border: 2px solid var(--color);
+    border-radius: var(--broder-radius);
+    background-color: var(--background-color-grey);
+    color: var(--color);
+    cursor: pointer;
+}
+
+/* 输入框 */
+.main input[type="text"] {
+    padding: 0.25rem 0.5rem;
+    border: 2px solid var(--color);
+    border-radius: var(--broder-radius);
+    background-color: var(--background-color);
+    color: var(--color);
+    cursor: text;
+}
+
+/* 左侧导航栏按钮 */
+#nav-left-button {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--color);
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    backdrop-filter: var(--backdrop-filter);
+    background-color: var(--background-color-blur);
+    /* background-color: black; */
+    border-radius: 0 0 var(--broder-radius) 0;
+    /* border-right: 2px solid var(--color-grey);
+    border-bottom: 2px solid var(--color-grey); */
+}
+
+/* 右下角功能按钮 */
+#nav-right-buttons {
+    position: fixed;
+    bottom: 0.5rem;
+    right: 0.5rem;
+}
+
+#nav-right-buttons>div {
+    width: 2rem;
+    height: 2rem;
+    padding: 2px;
+    margin: 0 0 0.5rem 0;
+    color: var(--color);
+    backdrop-filter: var(--backdrop-filter);
+    background-color: var(--background-color-blur);
+    border-radius: 50%;
+    /* border: 2px solid var(--color-grey); */
+    transition: all 0.3s;
+}
+
+#nav-right-buttons>div:last-child {
+    margin: 0;
+}
+
+#nav-right-buttons>div>svg {
+    width: 100%;
+    height: 100%;
+}

@@ -1,0 +1,55 @@
+<!--
+Markdown Viewer
+Copyright (C) 2024  [xkk1](https://github.com/xkk1)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Viewer</title>
+    <!-- marked -->
+    <script src="./libs/marked/marked.min.js"></script>
+    <!-- marked-gfm-heading-id -->
+    <script src="./libs/marked/marked-gfm-heading-id.umd.js"></script>
+    <script>marked.use(markedGfmHeadingId.gfmHeadingId());</script>
+    <!-- highlight.js -->
+    <script src="./libs/highlight.js/highlight.min.js"></script>
+    <!-- highlight.js vscode theme -->
+    <link rel="stylesheet" href="./libs/xkk1/css/xkk1-highlightjs-vscode-theme.css">
+    <!-- xkk1 主题 -->
+    <link rel="stylesheet" href="./libs/xkk1/css/xkk1.css">
+    <script src="./libs/xkk1/xkk1.js"></script>
+    <!-- js -->
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    <main id="main" class="main markdown">正在初始化……</main>
+    <!-- 右侧按钮 -->
+    <div id="nav-right-buttons">
+        <!-- 返回顶部 -->
+        <div id="back-to-top-button"></div>
+        <!-- 深色、浅色模式切换 -->
+        <div id="theme-toggle-button"></div>
+    </div>
+    <!-- 初始化右侧按钮 -->
+    <script>xkk1.initNavRightButtons('./libs/xkk1/img/svg-icons.svg');</script>
+    <!-- xkk1 主题字体 文件大，最后加载 -->
+    <link rel="preload" href="./libs/xkk1/css/fonts.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="./libs/xkk1/css/fonts.css"></noscript>
+</body>
+</html>

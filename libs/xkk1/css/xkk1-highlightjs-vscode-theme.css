@@ -1,0 +1,235 @@
+/*
+vscode style for highlight.js (c) xkk1 <xiao.kuku@qq.com>
+Copyright (C) 2024  [xkk1](https://github.com/xkk1)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/* [data-theme="light"] */
+:root {
+    --hljs-color: #3B3B3B;
+    --hljs-background-color: #FFFFFF;
+    --hljs-selector-class-color: #800000;
+    --hljs-attribute-color: #E50000;
+    --hljs-attr-color: #0451A5;
+    --hljs-string-color: #A31515;
+    --hljs-number-color: #098658;
+    --hljs-comment-color: #008000;
+    --hljs-title-color: #795E26;
+    --hljs-built_in-color: #795E26;
+    --hljs-keyword-color: #AF00DB;
+    --hljs-section-color: #800000;
+    --hljs-tag-color: #800000;
+    --hljs-name-color: #800000;
+    --hljs-quote-color: #0451A5;
+    --hljs-bullet-color: #0451A5;
+    --hljs-type-color: #267F99;
+    --hljs-variable-color: #001080;
+    --hljs-meta-color: #0000FF;
+    --hljs-subst-color: #0431FA;
+
+    --hljs-attr-color-html: #E50000;
+    --hljs-attr-color-xml: #E50000;
+    --hljs-keyword-color-latex: #795E26;
+    --hljs-built_in-color-latex: #AF00DB;
+    --hljs-strong-color-markdown: #000080;
+    --hljs-strong-emphasis-color-markdown: #000080;
+    --hljs-keyword-color-java: #0000FF;
+    --hljs-string-color-html: #0000FF;
+    --hljs-string-color-xml: #0000FF;
+    --hljs-title-class_-color: #267F99;
+
+
+}
+
+[data-theme="dark"] {
+    --hljs-color: #CCCCCC;
+    --hljs-background-color: #1F1F1F;
+    --hljs-selector-class-color: #D7BA7D;
+    --hljs-attribute-color: #9CDCFE;
+    --hljs-attr-color: #9CDCFE;
+    --hljs-string-color: #CE9178;
+    --hljs-number-color: #B5CEA8;
+    --hljs-comment-color: #6A9955;
+    --hljs-title-color: #DCDCAA;
+    --hljs-built_in-color: #DCDCAA;
+    --hljs-keyword-color: #C586C0;
+    --hljs-section-color: #800000;
+    --hljs-tag-color: #569CD6;
+    --hljs-name-color: #569CD6;
+    --hljs-quote-color: #6A9955;
+    --hljs-bullet-color: #6796E6;
+    --hljs-type-color: #569CD6;
+    --hljs-variable-color: #9CDCFE;
+    --hljs-meta-color: #C586C0;
+    --hljs-subst-color: #569CD6;
+
+    --hljs-strong-color-markdown: #569CD6;
+    --hljs-strong-emphasis-color-markdown: #569CD6;
+    --hljs-meta-color-latex: #6A9955;
+    --hljs-title-class_-color: #4EC9B0;
+    --hljs-type-color-java: #4EC9B0;
+    --hljs-keyword-color-latex: #DCDCAA;
+}
+
+pre code.hljs {
+    display: block;
+    overflow-x: auto;
+    white-space: pre;
+    padding: 0.5em;
+    color: var(--hljs-color);
+    background-color: var(--hljs-background-color);
+}
+
+pre:has(code.hljs) {
+    background-color: var(--hljs-background-color);
+}
+
+.hljs-selector-class {
+    color: var(--hljs-selector-class-color);
+}
+
+.hljs-attribute {
+    color: var(--hljs-attribute-color);
+}
+
+.hljs-attr {
+    color: var(--hljs-attr-color);
+}
+
+.hljs-string {
+    color: var(--hljs-string-color);
+}
+
+.hljs-number {
+    color: var(--hljs-number-color);
+}
+
+.hljs-comment {
+    color: var(--hljs-comment-color);
+}
+
+.hljs-title {
+    color: var(--hljs-title-color);
+}
+
+.hljs-built_in {
+    color: var(--hljs-built_in-color);
+}
+
+.hljs-keyword {
+    color: var(--hljs-keyword-color);
+}
+
+.hljs-section {
+    color: var(--hljs-section-color);
+}
+
+.hljs-tag {
+    color: var(--hljs-tag-color);
+}
+
+.hljs-name {
+    color: var(--hljs-name-color);
+}
+
+
+.hljs-quote {
+    color: var(--hljs-quote-color);
+}
+
+.hljs-bullet {
+    color: var(--hljs-quote-color);
+}
+
+
+.hljs-type {
+    color: var(--hljs-type-color);
+}
+
+.hljs-variable {
+    color: var(--hljs-variable-color);
+}
+
+.hljs-meta {
+    color: var(--hljs-meta-color);
+}
+
+.hljs-subst {
+    color: var(--hljs-subst-color);
+}
+
+
+.language-html .hljs-attr {
+    color: var(--hljs-attr-color-html, var(--hljs-attr-color));
+}
+
+.language-xml .hljs-attr {
+    color: var(--hljs-attr-color-xml, var(--hljs-attr-color));
+}
+
+.language-latex .hljs-keyword {
+    color: var(--hljs-keyword-color-latex, var(--hljs-keyword-color));
+}
+
+.language-latex .hljs-built_in {
+    color: var(--hljs-built_in-color-latex, var(--hljs-built_in-color));
+}
+
+.language-markdown .hljs-strong {
+    color: var(--hljs-strong-color-markdown, var(--hljs-strong-color));
+}
+
+.language-markdown .hljs-strong .hljs-emphasis {
+    color: var(--hljs-strong-emphasis-color-markdown, var(--hljs-strong-color));
+}
+
+.language-java .hljs-keyword {
+    color: var(--hljs-keyword-color-java, var(--hljs-keyword-color));
+}
+
+.language-html .hljs-string {
+    color: var(--hljs-string-color-html, var(--hljs-string-color));
+
+}
+
+.language-xml .hljs-string {
+    color: var(--hljs-string-color-xml, var(--hljs-string-color));
+
+}
+
+.hljs-title.class_ {
+    color: var(--hljs-title-class_-color, var(--hljs-title-color));
+}
+
+.language-latex .hljs-meta {
+    color: var(--hljs-meta-color-latex, var(--hljs-meta-color));
+}
+
+.language-java .hljs-type {
+    color: var(--hljs-type-color-java, var(--hljs-type-color));
+}
+
+.hljs-emphasis {
+    font-style: italic;
+}
+
+.hljs-strong,
+.language-markdown .hljs-section {
+    font-weight: bold;
+}
+
+.hljs-link {
+    text-decoration: underline;
+}
