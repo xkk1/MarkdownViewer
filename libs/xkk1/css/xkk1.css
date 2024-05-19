@@ -242,10 +242,12 @@ pre.show-line-num>ol.line-num {
 
 /* 表格 */
 .main table {
+    display: block;
+    width: max-content;
     max-width: 100%;
+    overflow: auto;
     border-collapse: collapse;
     border-spacing: 0;
-    empty-cells: show;
 }
 
 .main table thead {
@@ -257,6 +259,7 @@ pre.show-line-num>ol.line-num {
 .main td {
     padding: 0.5em 1em;
     border: 1px solid var(--color);
+    empty-cells: show;
 }
 
 .main th {
@@ -316,7 +319,6 @@ pre.show-line-num>ol.line-num {
 
     backdrop-filter: var(--backdrop-filter);
     background-color: var(--background-color-blur);
-    /* background-color: black; */
     border-radius: 0 0 var(--broder-radius) 0;
     /* border-right: 2px solid var(--color-grey);
     border-bottom: 2px solid var(--color-grey); */
