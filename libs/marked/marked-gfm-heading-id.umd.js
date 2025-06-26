@@ -84,33 +84,53 @@
     return value.replace(regex, '').replace(/ /g, '-')
   }
 
-  let slugger;
+  let slugger = new BananaSlug();
 
   let headings = [];
 
-  function gfmHeadingId({ prefix = '' } = {}) {
+  // unescape from marked helpers
+  const unescapeTest = /&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/ig;
+  /* istanbul ignore next */
+  function unescape(html) {
+    // explicitly match decimal, hex, and named HTML entities
+    return html.replace(unescapeTest, (_, n) => {
+      n = n.toLowerCase();
+      if (n === 'colon') return ':';
+      if (n.charAt(0) === '#') {
+        return n.charAt(1) === 'x'
+          ? String.fromCharCode(parseInt(n.substring(2), 16))
+          : String.fromCharCode(+n.substring(1));
+      }
+      return '';
+    });
+  }
+
+  function gfmHeadingId({ prefix = '', globalSlugs = false } = {}) {
     return {
       headerIds: false, // prevent deprecation warning; remove this once headerIds option is removed
       hooks: {
         preprocess(src) {
-          headings = [];
-          slugger = new BananaSlug();
+          if (!globalSlugs) {
+            resetHeadings();
+          }
           return src;
-        }
+        },
       },
+      useNewRenderer: true,
       renderer: {
-        heading(text, level, raw) {
-          raw = raw
-            .toLowerCase()
+        heading({ tokens, depth }) {
+          const text = this.parser.parseInline(tokens);
+          const raw = unescape(text)
             .trim()
             .replace(/<[!\/a-z].*?>/gi, '');
-          const id = `${prefix}${slugger.slug(raw)}`;
-          const heading = { level, text, id };
+          const level = depth;
+          const id = `${prefix}${slugger.slug(raw.toLowerCase())}`;
+          const heading = { level, text, id, raw };
           headings.push(heading);
 
           return `<h${level} id="${id}">${text}</h${level}>\n`;
-        }
-      }
+        },
+      },
     };
   }
 
@@ -118,7 +138,14 @@
     return headings;
   }
 
+  function resetHeadings() {
+    headings = [];
+    slugger = new BananaSlug();
+  }
+
   exports.getHeadingList = getHeadingList;
   exports.gfmHeadingId = gfmHeadingId;
+  exports.resetHeadings = resetHeadings;
+  exports.unescape = unescape;
 
 }));
