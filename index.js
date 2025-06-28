@@ -78,7 +78,7 @@ let introductionMarkdown = `# Markdown Viewer
 
 你可以通过以下 URL 结构来使用该项目：
 
-\`https://xkk1.github.io/MarkdownViewer/?md=\`<input id="md-input" type="text" placeholder="Markdown文件URL" size="25" />\`&title=\`<input id="title-input" type="text" placeholder="标题" size="14" />\`&target=\`<input id="target-input" type="text" placeholder="_self" size="8" />\`&icon=\`<input id="icon-input" type="text" placeholder="https://xkk1.github.io/favicon.ico" size="25" />\`&theme=\`<input id="theme-input" type="text" placeholder="auto" size="5" />
+\`${window.location.protocol + "//" + window.location.host + window.location.pathname}?\`<input id="md-input" type="text" placeholder="Markdown文件URL" size="25" />\`&title=\`<input id="title-input" type="text" placeholder="标题" size="14" />\`&target=\`<input id="target-input" type="text" placeholder="_self" size="8" />\`&icon=\`<input id="icon-input" type="text" placeholder="https://xkk1.github.io/favicon.ico" size="25" />\`&theme=\`<input id="theme-input" type="text" placeholder="auto" size="5" />
 
 <button type="button" onclick="changeMarkdownParseUrl();">生成 URL</button> <a id="markdown-parse-url" href="#" target="_blank"></a>
 
@@ -147,9 +147,9 @@ let errorMarkdown = `# [错误]：获取 Markdown 失败
 
 // 显示 Markdown
 function showMarkdown(markdown) {
-    let mainElement = document.getElementById("main");
-    mainElement.style.whiteSpace = 'initial';
-    mainElement.innerHTML = marked.parse(markdown);
+    let markdownElement = document.getElementById("markdown");
+    markdownElement.style.whiteSpace = 'initial';
+    markdownElement.innerHTML = marked.parse(markdown);
     // 代码高亮
     xkk1.highlight();
 }
@@ -170,7 +170,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 // 生成 Markdown 解析显示 URL
 function generateMarkdownParseUrl() {
     let markdownParseUrlSearchStrings = ["md", "title", "target", "icon", "theme"];
-    let markdownParseUrl = "https://xkk1.github.io/MarkdownViewer/";
+    // "https://xkk1.github.io/MarkdownViewer/";
+    let markdownParseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
     let markdownParseUrlSearchs = [];
     for (let i = 0; i < markdownParseUrlSearchStrings.length; i++) {
         let markdownParseUrlSearch = markdownParseUrlSearchStrings[i];
