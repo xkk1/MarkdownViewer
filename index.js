@@ -23,7 +23,7 @@ function getQueryVariable(variable) {
     for (var i = 0; i < vars.length; i++) {
         var pair = vars[i].split("=");
         if (pair[0] == variable) {
-            return decodeURI(pair[1]);
+            return decodeURIComponent(pair[1]);
         }
     }
     return null;
@@ -177,7 +177,7 @@ function generateMarkdownParseUrl() {
         let markdownParseUrlSearch = markdownParseUrlSearchStrings[i];
         let markdownParseUrlSearchElement = document.getElementById(markdownParseUrlSearch + "-input");
         if (markdownParseUrlSearchElement.value) {
-            markdownParseUrlSearchs.push(markdownParseUrlSearch + "=" + encodeURI(markdownParseUrlSearchElement.value));
+            markdownParseUrlSearchs.push(markdownParseUrlSearch + "=" + encodeURIComponent(markdownParseUrlSearchElement.value));
         }
         
     }
