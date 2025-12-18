@@ -78,7 +78,9 @@ let replacementMarkdown = `
 // 出错时显示的内容
 let errorMarkdown = `# [错误]：获取 Markdown 失败
 
+\`\`\`plaintext
 {errorInfo}
+\`\`\`
 
 ---
 
@@ -90,7 +92,6 @@ function beforeRenderMarkdown(markdown) {
   if (!getQueryVariable("md")) {
     markdown = markdown.replace(patternMarkdown, replacementMarkdown);
   }
-  console.log(markdown);
   return markdown;
 }
 
