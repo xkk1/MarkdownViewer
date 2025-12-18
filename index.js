@@ -94,7 +94,7 @@ function replaceMarkdownPaths(markdown, baseUrl = 'https://xkk1.github.io/Markdo
     if (shouldSkipConversion(path)) {
       return match;
     }
-    return `[${text}](${buildFullUrl(baseUrl, path)})`;
+    return `[${text}](${buildFullUrl(baseUrl, path, text)})`;
   });
 
   // 处理图片链接 ![alt](path)
@@ -102,7 +102,7 @@ function replaceMarkdownPaths(markdown, baseUrl = 'https://xkk1.github.io/Markdo
     if (shouldSkipConversion(path)) {
       return match;
     }
-    return `![${alt}](${buildFullUrl(baseUrl, path)})`;
+    return `![${alt}](${buildFullUrl(baseUrl, path, alt)})`;
   });
 
   // 处理引用链接 [ref]: path
@@ -110,7 +110,7 @@ function replaceMarkdownPaths(markdown, baseUrl = 'https://xkk1.github.io/Markdo
     if (shouldSkipConversion(path)) {
       return match;
     }
-    return `[${ref}]: ${buildFullUrl(baseUrl, path)}`;
+    return `[${ref}]: ${buildFullUrl(baseUrl, path, ref)}`;
   });
 
   // 处理尖括号 <path>
@@ -133,19 +133,35 @@ function shouldSkipConversion(path) {
   // 这样以/开头的路径也会被替换
 }
 
-function buildFullUrl(baseUrl, relativePath) {
+function buildFullUrl(baseUrl, relativePath, title = null) {
+  let fullUrl = buildFullUrlNormal(baseUrl, relativePath);
+  // 判断链接类型是 markdown 文件
+  let clearRelativePath = relativePath.split('#')[0].split('?')[0];
+  if (clearRelativePath.endsWith('.md')) {
+    fullUrl = `${markdownParseUrl}?md=${encodeURIComponent(fullUrl)}`
+    // 添加标题参数
+    if (title) {
+      fullUrl += `&title=${encodeURIComponent(title)}`;
+    }
+  }
+  return fullUrl;
+}
+
+function buildFullUrlNormal(baseUrl, relativePath) {
   if (baseUrl.startsWith('https://') || baseUrl.startsWith('http://')) {
     try {
       let url = new URL(relativePath, baseUrl);
       return url.toString();
     } catch (error) {}
   }
-
+  let clearRelativePath = relativePath;
   if (relativePath.startsWith('/')) {
     return relativePath;
+  } else if (clearRelativePath.startsWith('./')) {
+    clearRelativePath = clearRelativePath.substring(2);
   }
   
-  return baseUrl + relativePath;
+  return baseUrl + clearRelativePath;
 }
 
 // 渲染前
