@@ -6,7 +6,8 @@
 
 - **Markdown 解析**：使用 [Marked](https://github.com/markedjs/marked) 库解析 Markdown 文件。
 - **代码高亮**：使用 [highlight.js](https://github.com/highlightjs/highlight.js) 进行代码高亮显示。
-- **深浅主题自适应**：根据系统设置自动切换深色和浅色模式。
+- **深浅主题**：根据系统设置自动切换深色和浅色模式，也可手动指定深浅模式。
+- **智能替换URL路径**：自动替换 Markdown 中的图片、链接等路径为正确的 URL。
 
 ## 使用方法
 
@@ -16,7 +17,6 @@
 https://xkk1.github.io/MarkdownViewer/?md=Markdown文件URL&title=标题&target=_self&icon=网页图标URL&theme=默认主题
 ```
 
- 
 ### 参数
 
 | 参数名 | 是否必须 | 说明 | 示例 | 默认值 |
