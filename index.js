@@ -145,6 +145,11 @@ let errorMarkdown = `# [错误]：获取 Markdown 失败
 
 ` + introductionMarkdown;
 
+// 渲染前
+function beforeRenderMarkdown(markdown) {
+  return markdown;
+}
+
 // 渲染完成后
 function afterRenderMarkdown() {
   // 代码高亮
@@ -153,6 +158,7 @@ function afterRenderMarkdown() {
 
 // 渲染 Markdown
 function renderMarkdown(markdown) {
+  markdown = beforeRenderMarkdown(markdown);
   let markdownElement = document.getElementById("markdown");
   markdownElement.style.whiteSpace = 'initial';
   markdownElement.innerHTML = marked.parse(markdown);
