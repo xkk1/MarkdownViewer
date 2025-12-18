@@ -63,9 +63,12 @@ xkk1.copyToClipboard = function (text) {
 /**
  * 代码高亮
  */
-xkk1.highlight = function () {
+xkk1.highlight = function (codeElement) {
   // 代码高亮
-  document.querySelectorAll('pre>code').forEach((el) => {
+  function highlightPreCodeElement(el) {
+    if (el.dataset.highlighted || el.classList.contains('hljs')) {
+      return;
+    }
     // 计算行号
     let line_split = el.innerText.split('\n');
     let line_num = line_split[line_split.length - 1] ? line_split.length : line_split.length - 1;
@@ -136,9 +139,19 @@ xkk1.highlight = function () {
       tool_box.classList.remove('show-tool-box');
     })
 
-  });
+  }
+  if (codeElement instanceof Element) {
+    highlightPreCodeElement(codeElement);
+  } else if (codeElement instanceof NodeList) {
+    codeElement.forEach((el) => highlightPreCodeElement(el));
+  } else {
+    document.querySelectorAll('pre>code').forEach((el) => highlightPreCodeElement(el));
+  }
 
 };
+xkk1.highlightAll = function () {
+  xkk1.highlight();
+}
 
 /**
  * 侧栏按钮容器默认 HTML 内容
