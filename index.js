@@ -148,6 +148,7 @@ function buildFullUrl(baseUrl, relativePath, title = null) {
 }
 
 function buildFullUrlNormal(baseUrl, relativePath) {
+  if (!baseUrl) return relativePath;
   if (baseUrl.startsWith('https://') || baseUrl.startsWith('http://')) {
     try {
       let url = new URL(relativePath, baseUrl);
@@ -175,6 +176,8 @@ function beforeRenderMarkdown(markdown) {
       baseUrl = window.location.protocol + baseUrl;
     }
     markdown = replaceMarkdownPaths(markdown, baseUrl);
+  } else {
+    markdown = replaceMarkdownPaths(markdown, "");
   }
   return markdown;
 }
