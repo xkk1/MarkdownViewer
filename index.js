@@ -87,10 +87,70 @@ let errorMarkdown = `# [错误]：获取 Markdown 失败
 ## 使用方法
 ` + replacementMarkdown;
 
+function replaceMarkdownPaths(markdown, baseUrl = 'https://xkk1.github.io/MarkdownViewer/') {
+  // 处理普通链接 [text](path)
+  let result = markdown.replace(/\[([^\]]*)\]\(([^)]+)\)/g, (match, text, path) => {
+    if (isAbsolutePath(path)) {
+      return match;
+    }
+    return `[${text}](${buildFullUrl(baseUrl, path)})`;
+  });
+
+  // 处理图片链接 ![alt](path)
+  result = result.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, path) => {
+    if (isAbsolutePath(path)) {
+      return match;
+    }
+    return `![${alt}](${buildFullUrl(baseUrl, path)})`;
+  });
+
+  // 处理引用链接 [ref]: path
+  result = result.replace(/^\[([^\]]+)\]:\s*(\S+)/gm, (match, ref, path) => {
+    if (isAbsolutePath(path)) {
+      return match;
+    }
+    return `[${ref}]: ${buildFullUrl(baseUrl, path)}`;
+  });
+
+  // 处理尖括号 <path>
+  result = result.replace(/<([^>]+)>/g, (match, path) => {
+    if (isAbsolutePath(path)) {
+      return match;
+    }
+    return `<${buildFullUrl(baseUrl, path)}>`;
+  });
+
+  return result;
+}
+
+function isAbsolutePath(path) {
+  return /^(https?:)?\/\//.test(path) ||
+    /^[a-z]+:/.test(path) || // mailto:, tel:, etc.
+    path.startsWith('#') ||
+    path.startsWith('/') && !path.startsWith('//'); // 绝对路径但不是协议相对
+}
+
+function buildFullUrl(baseUrl, relativePath) {
+  // 确保baseUrl以斜杠结尾
+  const cleanBase = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
+
+  // 清理相对路径开头的 ./ 或 ../
+  let cleanedPath = relativePath;
+  if (cleanedPath.startsWith('./')) {
+    cleanedPath = cleanedPath.substring(2);
+  }
+
+  return cleanBase + cleanedPath;
+}
+
 // 渲染前
 function beforeRenderMarkdown(markdown) {
-  if (!getQueryVariable("md")) {
+  let markdownURL = getQueryVariable("md") || "README.md";
+  if (markdownURL === "README.md") {
     markdown = markdown.replace(patternMarkdown, replacementMarkdown);
+  } else if (markdownURL.includes("/")) {
+    let baseUrl = markdownURL.substring(0, markdownURL.lastIndexOf("/")) + "/";
+    markdown = replaceMarkdownPaths(markdown, baseUrl);
   }
   return markdown;
 }
