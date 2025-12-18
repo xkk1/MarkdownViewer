@@ -91,7 +91,7 @@ let errorMarkdown = `# [错误]：获取 Markdown 失败
 function replaceMarkdownPaths(markdown, baseUrl = 'https://xkk1.github.io/MarkdownViewer/') {
   // 处理普通链接 [text](path)
   let result = markdown.replace(/\[([^\]]*)\]\(([^)]+)\)/g, (match, text, path) => {
-    if (shouldSkipConversion(path)) {  // 修改这里
+    if (shouldSkipConversion(path)) {
       return match;
     }
     return `[${text}](${buildFullUrl(baseUrl, path)})`;
@@ -99,7 +99,7 @@ function replaceMarkdownPaths(markdown, baseUrl = 'https://xkk1.github.io/Markdo
 
   // 处理图片链接 ![alt](path)
   result = result.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, path) => {
-    if (shouldSkipConversion(path)) {  // 修改这里
+    if (shouldSkipConversion(path)) {
       return match;
     }
     return `![${alt}](${buildFullUrl(baseUrl, path)})`;
@@ -107,15 +107,15 @@ function replaceMarkdownPaths(markdown, baseUrl = 'https://xkk1.github.io/Markdo
 
   // 处理引用链接 [ref]: path
   result = result.replace(/^\[([^\]]+)\]:\s*(\S+)/gm, (match, ref, path) => {
-    if (shouldSkipConversion(path)) {  // 修改这里
+    if (shouldSkipConversion(path)) {
       return match;
     }
     return `[${ref}]: ${buildFullUrl(baseUrl, path)}`;
   });
 
   // 处理尖括号 <path>
-  result = result.replace(/<([^>]+)>/g, (match, path) => {
-    if (shouldSkipConversion(path)) {  // 修改这里
+  result = result.replace(/<([^>\s]+)>/g, (match, path) => {
+    if (!path.includes('.') || shouldSkipConversion(path)) {
       return match;
     }
     return `<${buildFullUrl(baseUrl, path)}>`;
