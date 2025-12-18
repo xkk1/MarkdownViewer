@@ -12,7 +12,7 @@
 
 你可以通过以下 URL 结构来使用该项目：
 
-```
+```planttext
 https://xkk1.github.io/MarkdownViewer/?md=Markdown文件URL&title=标题&target=_self&icon=网页图标URL&theme=默认主题
 ```
 
