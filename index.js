@@ -63,6 +63,7 @@ if (theme && localStorage.getItem("theme") === null) {
   localStorage.setItem("theme", theme);
 }
 
+let markdownParseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
 // 替换默认显示的内容
 let patternMarkdown = `
 \`\`\`plaintext
@@ -70,7 +71,7 @@ https://xkk1.github.io/MarkdownViewer/?md=Markdown文件URL&title=标题&target=
 \`\`\`
 `
 let replacementMarkdown = `
-\`${window.location.protocol + "//" + window.location.host + window.location.pathname}?\`<input id="md-input" type="text" placeholder="Markdown文件URL" size="25" />\`&title=\`<input id="title-input" type="text" placeholder="标题" size="14" />\`&target=\`<input id="target-input" type="text" placeholder="_self" size="8" />\`&icon=\`<input id="icon-input" type="text" placeholder="https://xkk1.github.io/favicon.ico" size="25" />\`&theme=\`<input id="theme-input" type="text" placeholder="auto" size="5" />
+\`${markdownParseUrl}?md=\`<input id="md-input" type="text" placeholder="Markdown文件URL" size="25" />\`&title=\`<input id="title-input" type="text" placeholder="标题" size="14" />\`&target=\`<input id="target-input" type="text" placeholder="_self" size="8" />\`&icon=\`<input id="icon-input" type="text" placeholder="https://xkk1.github.io/favicon.ico" size="25" />\`&theme=\`<input id="theme-input" type="text" placeholder="auto" size="5" />
 
 <button type="button" onclick="changeMarkdownParseUrl();">生成 URL</button> <a id="markdown-parse-url" href="#" target="_blank"></a>
 `;
@@ -194,7 +195,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 function generateMarkdownParseUrl() {
   let markdownParseUrlSearchStrings = ["md", "title", "target", "icon", "theme"];
   // "https://xkk1.github.io/MarkdownViewer/";
-  let markdownParseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
   let markdownParseUrlSearchs = [];
   for (let i = 0; i < markdownParseUrlSearchStrings.length; i++) {
     let markdownParseUrlSearch = markdownParseUrlSearchStrings[i];
