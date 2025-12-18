@@ -18,15 +18,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 //获取 URL get 参数
 function getQueryVariable(variable) {
-    var query = window.location.search.substring(1);
-    var vars = query.split("&");
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split("=");
-        if (pair[0] == variable) {
-            return decodeURIComponent(pair[1]);
-        }
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
+    if (pair[0] == variable) {
+      return decodeURIComponent(pair[1]);
     }
-    return null;
+  }
+  return null;
 }
 /*
 使用实例
@@ -51,16 +51,16 @@ document.head.appendChild(baseElement);
 // 设置网页图标
 let icon = getQueryVariable("icon");
 if (icon) {
-    let link = document.createElement("link");
-    link.rel = "icon";
-    link.href = icon;
-    document.head.appendChild(link);
+  let link = document.createElement("link");
+  link.rel = "icon";
+  link.href = icon;
+  document.head.appendChild(link);
 }
 
 // 设置默认主题
 let theme = getQueryVariable("theme");
 if (theme && localStorage.getItem("theme") === null) {
-    localStorage.setItem("theme", theme);
+  localStorage.setItem("theme", theme);
 }
 
 // 默认显示的内容
@@ -98,19 +98,19 @@ let introductionMarkdown = `# Markdown Viewer
 
 ## 开始使用
 
-1. 克隆该项目到本地： 
+1.  克隆该项目到本地： 
      
     \`\`\`sh
     git clone https://github.com/xkk1/MarkdownViewer.git
     \`\`\`
 
-2. 进入项目目录：
+2.  进入项目目录：
       
     \`\`\`sh
     cd MarkdownViewer
     \`\`\`
 
-3. 启动一个 HTTP 服务器（或将项目部署到 GitHub Pages 等静态网站托管服务上）  
+3.  启动一个 HTTP 服务器（或将项目部署到 GitHub Pages 等静态网站托管服务上）  
     这里使用 Python 启动一个简单的 HTTP 服务器：  
     
     \`\`\`sh
@@ -123,7 +123,7 @@ let introductionMarkdown = `# Markdown Viewer
     python -m SimpleHTTPServer 8000
     \`\`\`
 
-4. 在浏览器中打开以下 URL：  
+4.  在浏览器中打开以下 URL：  
     <http://localhost:8000/>
 
 
@@ -147,50 +147,50 @@ let errorMarkdown = `# [错误]：获取 Markdown 失败
 
 // 显示 Markdown
 function showMarkdown(markdown) {
-    let markdownElement = document.getElementById("markdown");
-    markdownElement.style.whiteSpace = 'initial';
-    markdownElement.innerHTML = marked.parse(markdown);
-    // 代码高亮
-    xkk1.highlight();
+  let markdownElement = document.getElementById("markdown");
+  markdownElement.style.whiteSpace = 'initial';
+  markdownElement.innerHTML = marked.parse(markdown);
+  // 代码高亮
+  xkk1.highlight();
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
-    let markdownURL = getQueryVariable("md");
-    if (markdownURL) {
-        fetch(markdownURL)
-            .then(response => response.text())
-            .then(markdown => showMarkdown(markdown))
-            .catch(error => showMarkdown(errorMarkdown.replace("{errorInfo}", error)));
-    } else {
-        showMarkdown(introductionMarkdown);
-    }
+  let markdownURL = getQueryVariable("md");
+  if (markdownURL) {
+    fetch(markdownURL)
+      .then(response => response.text())
+      .then(markdown => showMarkdown(markdown))
+      .catch(error => showMarkdown(errorMarkdown.replace("{errorInfo}", error)));
+  } else {
+    showMarkdown(introductionMarkdown);
+  }
 
 });
 
 // 生成 Markdown 解析显示 URL
 function generateMarkdownParseUrl() {
-    let markdownParseUrlSearchStrings = ["md", "title", "target", "icon", "theme"];
-    // "https://xkk1.github.io/MarkdownViewer/";
-    let markdownParseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-    let markdownParseUrlSearchs = [];
-    for (let i = 0; i < markdownParseUrlSearchStrings.length; i++) {
-        let markdownParseUrlSearch = markdownParseUrlSearchStrings[i];
-        let markdownParseUrlSearchElement = document.getElementById(markdownParseUrlSearch + "-input");
-        if (markdownParseUrlSearchElement.value) {
-            markdownParseUrlSearchs.push(markdownParseUrlSearch + "=" + encodeURIComponent(markdownParseUrlSearchElement.value));
-        }
-        
+  let markdownParseUrlSearchStrings = ["md", "title", "target", "icon", "theme"];
+  // "https://xkk1.github.io/MarkdownViewer/";
+  let markdownParseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+  let markdownParseUrlSearchs = [];
+  for (let i = 0; i < markdownParseUrlSearchStrings.length; i++) {
+    let markdownParseUrlSearch = markdownParseUrlSearchStrings[i];
+    let markdownParseUrlSearchElement = document.getElementById(markdownParseUrlSearch + "-input");
+    if (markdownParseUrlSearchElement.value) {
+      markdownParseUrlSearchs.push(markdownParseUrlSearch + "=" + encodeURIComponent(markdownParseUrlSearchElement.value));
     }
-    let markdownParseUrlSearchsString = markdownParseUrlSearchs.join("&");
-    if (markdownParseUrlSearchsString) {
-        markdownParseUrl += "?" + markdownParseUrlSearchsString;
-    };
-    return markdownParseUrl;
+
+  }
+  let markdownParseUrlSearchsString = markdownParseUrlSearchs.join("&");
+  if (markdownParseUrlSearchsString) {
+    markdownParseUrl += "?" + markdownParseUrlSearchsString;
+  };
+  return markdownParseUrl;
 }
 
 function changeMarkdownParseUrl() {
-    let markdownParseUrl = generateMarkdownParseUrl();
-    let markdownParseUrlElement = document.getElementById("markdown-parse-url");
-    markdownParseUrlElement.href = markdownParseUrl;
-    markdownParseUrlElement.textContent = markdownParseUrl;
+  let markdownParseUrl = generateMarkdownParseUrl();
+  let markdownParseUrlElement = document.getElementById("markdown-parse-url");
+  markdownParseUrlElement.href = markdownParseUrl;
+  markdownParseUrlElement.textContent = markdownParseUrl;
 }

@@ -33,19 +33,19 @@ https://xkk1.github.io/MarkdownViewer/?md=Markdown文件URL&title=标题&target=
 
 ## 开始使用
 
-1. 克隆该项目到本地：
+1.  克隆该项目到本地：
     
     ```sh
     git clone https://github.com/xkk1/MarkdownViewer.git
     ```
 
-2. 进入项目目录：
+2.  进入项目目录：
       
     ```sh
     cd MarkdownViewer
     ```
     
-3. 启动一个 HTTP 服务器（或将项目部署到 GitHub Pages 等静态网站托管服务上）  
+3.  启动一个 HTTP 服务器（或将项目部署到 GitHub Pages 等静态网站托管服务上）  
     这里使用 Python 启动一个简单的 HTTP 服务器：
     
     ```sh
@@ -58,7 +58,7 @@ https://xkk1.github.io/MarkdownViewer/?md=Markdown文件URL&title=标题&target=
     python -m SimpleHTTPServer 8000
     ```
 
-4. 在浏览器中打开以下 URL：  
+4.  在浏览器中打开以下 URL：  
     <http://localhost:8000/>
 
 ## 贡献
