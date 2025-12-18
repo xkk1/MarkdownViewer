@@ -16,28 +16,28 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-//获取 URL get 参数
-function getQueryVariable(variable) {
-  var query = window.location.search.substring(1);
-  var vars = query.split("&");
-  for (var i = 0; i < vars.length; i++) {
-    var pair = vars[i].split("=");
-    if (pair[0] == variable) {
-      return decodeURIComponent(pair[1]);
+/**
+ * Get the value of a specific query parameter from the URL.
+ * 获取 URL 中指定参数的值。
+ * @param {string} paramName - The name of the query parameter. 参数名称。
+ * @return {string|null} The value of the query parameter, or null if not found. 参数值，如果没有找到则返回 null。
+ */
+function getQueryVariable(paramName) {
+  paramName = decodeURIComponent(paramName);
+  let queryString = window.location.search.substring(1); // 去掉开头的 '?'
+  let paramPairs = queryString.split("&"); // 分割成键值对数组，如 ["name=John", "age=20"]
+  
+  for (let i = 0; i < paramPairs.length; i++) {
+    let keyValue = paramPairs[i].split("="); // 分割单个键值对，如 ["name", "John"]
+    let key = decodeURIComponent(keyValue[0]);
+    let value = keyValue[1] || '';  // 获取 value，若不存在则返回空字符串
+
+    if (key === paramName) {
+      return decodeURIComponent(value);
     }
   }
-  return null;
+  return null; // 未找到对应参数
 }
-/*
-使用实例
-url 实例：
-
-http://www.runoob.com/index.php?id=1&image=awesome.jpg
-调用 getQueryVariable("id") 返回 1。
-
-调用 getQueryVariable("image") 返回 "awesome.jpg"。
-*/
-
 
 // 修改标题
 document.title = getQueryVariable("title") || document.title;
