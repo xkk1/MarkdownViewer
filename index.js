@@ -145,13 +145,19 @@ let errorMarkdown = `# [错误]：获取 Markdown 失败
 
 ` + introductionMarkdown;
 
-// 显示 Markdown
-function showMarkdown(markdown) {
+// 渲染完成后
+function afterRenderMarkdown() {
+  // 代码高亮
+  xkk1.highlightAll();
+}
+
+// 渲染 Markdown
+function renderMarkdown(markdown) {
   let markdownElement = document.getElementById("markdown");
   markdownElement.style.whiteSpace = 'initial';
   markdownElement.innerHTML = marked.parse(markdown);
-  // 代码高亮
-  xkk1.highlight();
+  // 渲染完成后
+  afterRenderMarkdown(markdownElement);
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -159,10 +165,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
   if (markdownURL) {
     fetch(markdownURL)
       .then(response => response.text())
-      .then(markdown => showMarkdown(markdown))
-      .catch(error => showMarkdown(errorMarkdown.replace("{errorInfo}", error)));
+      .then(markdown => renderMarkdown(markdown))
+      .catch(error => renderMarkdown(errorMarkdown.replace("{errorInfo}", error)));
   } else {
-    showMarkdown(introductionMarkdown);
+    renderMarkdown(introductionMarkdown);
   }
 
 });

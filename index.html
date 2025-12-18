@@ -53,8 +53,24 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
     <!-- 深色、浅色模式切换 -->
     <div id="theme-toggle-button"></div>
   </div>
-  <!-- 初始化右侧按钮 -->
-  <script>xkk1.initNavRightButtons('./libs/xkk1/img/svg-icons.svg');</script>
+  <script>
+    // 渲染 MarkDown 内容后
+    function afterRenderMarkdown(markdownElement) {
+      // 代码高亮
+      if (xkk1) {
+        xkk1.highlightAll();
+        // or
+        // markdownElement.querySelectorAll('pre>code').forEach((el) => {
+        //   xkk1.highlight(el);
+        // });
+      } else if (window.hljs) {
+        hljs.highlightAll();
+      }
+    }
+
+    // 初始化右侧按钮
+    xkk1.initNavRightButtons('./libs/xkk1/img/svg-icons.svg');
+  </script>
 </body>
 
 </html>
