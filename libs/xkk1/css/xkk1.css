@@ -28,8 +28,53 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
     --p-font-size: 1rem;
     --broder-radius: 0.5rem;
     --code-font-size: 1rem;
-    --code-font-family: "Fira Code", monospace;
-    --font-family: "Resource Han Rounded CN", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans;
+    --code-font-family: 
+        /* 首选：编程连字字体 */
+        "Fira Code",                             /* 编程连字体，支持连字 */
+        "Cascadia Code",                         /* Windows Terminal */
+        "JetBrains Mono",                        /* JetBrains IDE */
+        
+        /* 思源等宽字体族 */
+        "Noto Sans Mono",                        /* Google Noto 等宽 */
+        "Noto Sans Mono CJK SC",                 /* 思源等宽中日韩简体 */
+        "Source Han Mono",                       /* 思源等宽字体 */
+        "Source Han Mono CN",                    /* 思源等宽简体 */
+        
+        /* 系统等宽字体 */
+        "SF Mono", "Monaco",                     /* macOS */
+        "Consolas", "Menlo",                     /* Windows & 通用 */
+        "Courier New",                           /* 传统等宽 */
+        
+        /* 回退等宽 */
+        "Monaco", "DejaVu Sans Mono",            /* 备用等宽 */
+        "Liberation Mono",                       /* 开源等宽 */
+        "Ubuntu Mono",                           /* Ubuntu */
+        "Droid Sans Mono",                       /* Android */
+        monospace;                               /* 最终回退 */
+    --font-family: 
+        /* 中文黑体字体栈 */
+        "Resource Han Rounded CN",               /* 首选：资源汉圆黑体 */
+        "Resource Han Rounded",                  /* 资源汉圆黑体通用 */
+        "Source Han Sans CN",                    /* 思源黑体简体中文 */
+        "Source Han Sans",                       /* 思源黑体通用 */
+        "Noto Sans SC",                          /* Google 思源黑体简体 */
+        "Noto Sans CJK SC",                      /* Google 思源黑体 CJK */
+        
+        /* 系统回退黑体 */
+        "PingFang SC",                           /* macOS/iOS 苹方 */
+        "Hiragino Sans GB",                      /* macOS 冬青黑体 */
+        "Microsoft YaHei UI",                    /* Windows 微软雅黑 UI */
+        "Microsoft YaHei",                       /* Windows 微软雅黑 */
+        "Droid Sans Fallback",                   /* Android 回退 */
+        
+        /* 通用无衬线字体 */
+        -apple-system,                           /* Apple 系统字体 */
+        BlinkMacSystemFont,                      /* Chrome/Edge 系统字体 */
+        "Segoe UI",                              /* Windows UI 字体 */
+        Roboto,                                  /* Google Material */
+        "Helvetica Neue",                        /* macOS 传统 */
+        Arial,                                   /* 通用回退 */
+        sans-serif;                              /* 最终回退 */
     --backdrop-filter: blur(0.125rem);
     /* --background-color-blur-white: rgba(255, 255, 255, 0.8);
     --background-color-blur-black: rgba(0, 0, 0, 0.8); */
