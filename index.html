@@ -54,16 +54,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
     <div id="theme-toggle-button"></div>
   </div>
   <script>
-    // 渲染 MarkDown 内容后
-    function afterRenderMarkdown(markdownElement) {
-      // 代码高亮、显示行号、添加按钮
-      xkk1.highlightAll();
-      // or
-      // markdownElement.querySelectorAll('pre>code').forEach((el) => {
-      //   xkk1.highlight(el);
-      // });
-    }
-
     // 初始化右侧按钮
     xkk1.initNavRightButtons('./libs/xkk1/img/svg-icons.svg');
   </script>
