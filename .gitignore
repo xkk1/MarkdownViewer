@@ -10,3 +10,8 @@
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+# 移除引用库，默认采用 CDN
+/libs/**/*
+!/libs/xkk1/
+!/libs/xkk1/**/*
