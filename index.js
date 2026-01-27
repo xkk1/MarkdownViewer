@@ -23,20 +23,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * @return {string|null} The value of the query parameter, or null if not found. 参数值，如果没有找到则返回 null。
  */
 function getQueryVariable(paramName) {
-  paramName = decodeURIComponent(paramName);
-  let queryString = window.location.search.substring(1); // 去掉开头的 '?'
-  let paramPairs = queryString.split("&"); // 分割成键值对数组，如 ["name=John", "age=20"]
-  
-  for (let i = 0; i < paramPairs.length; i++) {
-    let keyValue = paramPairs[i].split("="); // 分割单个键值对，如 ["name", "John"]
-    let key = decodeURIComponent(keyValue[0]);
-    let value = keyValue[1] || '';  // 获取 value，若不存在则返回空字符串
-
-    if (key === paramName) {
-      return decodeURIComponent(value);
-    }
-  }
-  return null; // 未找到对应参数
+  const params = new URLSearchParams(window.location.search);
+  return params.get(paramName); // 自动处理解码，若不存在则返回 null
 }
 
 // 修改标题
