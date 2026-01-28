@@ -61,7 +61,7 @@ https://xkk1.github.io/MarkdownViewer/?md=Markdown文件URL&title=标题&target=
 \`\`\`
 `
 let replacementMarkdown = `
-<div onkeydown="changeMarkdownParseUrl();">
+<div onkeyup="changeMarkdownParseUrl();">
 ${markdownParseUrl}?md=<input id="md-input" type="text" placeholder="Markdown文件URL" size="25" />&title=<input id="title-input" type="text" placeholder="标题" size="14" />&target=<input id="target-input" type="text" placeholder="_self" size="8" />&icon=<input id="icon-input" type="text" placeholder="https://xkk1.github.io/favicon.ico" size="25" />&theme=<input id="theme-input" type="text" placeholder="auto" size="5" />
 
 <button type="button" onclick="changeMarkdownParseUrl();">生成 URL</button> <a id="markdown-parse-url" href="#" target="_blank"></a>
