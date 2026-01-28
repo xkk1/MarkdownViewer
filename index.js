@@ -174,7 +174,7 @@ function beforeRenderMarkdown(markdown) {
 }
 
 // 渲染完成后
-function afterRenderMarkdown() {
+function afterRenderMarkdown(markdownElement) {
   // 代码高亮、显示行号、添加按钮
   xkk1.highlightAll();
   // or
