@@ -16,50 +16,53 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-const currentUrl = window.location.href;
-const currentUrlParams = new URLSearchParams(window.location.search);
+const currentURL = window.location.href;
+const currentURLParams = new URLSearchParams(window.location.search);
+
+// Markdown URL
+const markdownURL = currentURLParams.get("md") || "README.md";
 
 // 修改标题
-document.title = currentUrlParams.get("title") || document.title;
+document.title = currentURLParams.get("title") || document.title;
 
 // 设置超链接默认打开方式 
-let target = currentUrlParams.get("target") || "_self";
-let baseElement = document.createElement("base");
+const target = currentURLParams.get("target") || "_self";
+const baseElement = document.createElement("base");
 baseElement.setAttribute("target", target);
 document.head.appendChild(baseElement);
 
 // 设置网页图标
-let icon = currentUrlParams.get("icon");
+const icon = currentURLParams.get("icon");
 if (icon) {
-  let link = document.createElement("link");
+  const link = document.createElement("link");
   link.rel = "icon";
   link.href = icon;
   document.head.appendChild(link);
 }
 
 // 设置默认主题
-let theme = currentUrlParams.get("theme");
+let theme = currentURLParams.get("theme");
 if (theme && localStorage.getItem("theme") === null) {
   localStorage.setItem("theme", theme);
 }
 
-let markdownParseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+const markdownParseURL = window.location.protocol + "//" + window.location.host + window.location.pathname;
 // 替换默认显示的内容
-let patternMarkdown = `
+const patternMarkdown = `
 \`\`\`plaintext
 https://xkk1.github.io/MarkdownViewer/?md=Markdown文件URL&title=标题&target=_self&icon=网页图标URL&theme=默认主题
 \`\`\`
 `
-let replacementMarkdown = `
-<div onkeyup="changeMarkdownParseUrl();">
-${markdownParseUrl}?md=<input id="md-input" type="text" placeholder="Markdown文件URL" size="25" />&title=<input id="title-input" type="text" placeholder="标题" size="14" />&target=<input id="target-input" type="text" placeholder="_self" size="8" />&icon=<input id="icon-input" type="text" placeholder="https://xkk1.github.io/favicon.ico" size="25" />&theme=<input id="theme-input" type="text" placeholder="auto" size="5" />
+const replacementMarkdown = `
+<div onkeyup="changeMarkdownParseURL();">
+${markdownParseURL}?md=<input id="md-input" type="text" placeholder="Markdown文件URL" size="25" />&title=<input id="title-input" type="text" placeholder="标题" size="14" />&target=<input id="target-input" type="text" placeholder="_self" size="8" />&icon=<input id="icon-input" type="text" placeholder="https://xkk1.github.io/favicon.ico" size="25" />&theme=<input id="theme-input" type="text" placeholder="auto" size="5" />
 
-<button type="button" onclick="changeMarkdownParseUrl();">生成 URL</button> <a id="markdown-parse-url" href="#" target="_blank"></a>
+<button type="button" onclick="changeMarkdownParseURL();">生成 URL</button> <a id="markdown-parse-url" href="#" target="_blank"></a>
 </div>
 `;
 
 // 出错时显示的内容
-let errorMarkdown = `# [错误]：获取 Markdown 失败
+const errorMarkdown = `# [错误]：获取 Markdown 失败
 
 \`\`\`plaintext
 {errorInfo}
@@ -73,8 +76,8 @@ let errorMarkdown = `# [错误]：获取 Markdown 失败
 /*
  * 智能替换URL路径
  */
-function replaceMarkdownUrl(markdownElement) {
-  let markdownURL = new URL(currentUrlParams.get("md") || "README.md", currentUrl);
+function replaceMarkdownURL(markdownElement) {
+  const markdownURLObject = new URL(markdownURL, currentURL);
   // 获取所有需要处理的标签
   const links = markdownElement.querySelectorAll('a[href], img[src], script[src], iframe[src]');
   links.forEach(el => {
@@ -88,20 +91,19 @@ function replaceMarkdownUrl(markdownElement) {
       || url.startsWith('//')    // //
       || url.startsWith('#')     // 页面锚点
       || /^[a-z]+:/.test(url)    // mailto:, tel:, etc.
-      ) {
-        return;
+    ) {
+      return;
     }
-    let absluteUrl = new URL(url, markdownURL).href;
-    if (el[attrName] !== absluteUrl) {
+    let absluteURL = new URL(url, markdownURLObject).href;
+    if (el[attrName] !== absluteURL) {
       // 设置绝对路径替换原本错误的相对路径
-      el.setAttribute(attrName, absluteUrl);
+      el.setAttribute(attrName, absluteURL);
     }
   });
 }
 
 // 渲染前
 function beforeRenderMarkdown(markdown) {
-  let markdownURL = currentUrlParams.get("md") || "README.md";
   if (markdownURL === "README.md") {
     markdown = markdown.replace(patternMarkdown, replacementMarkdown);
   }
@@ -110,7 +112,7 @@ function beforeRenderMarkdown(markdown) {
 
 // 渲染完成后
 function afterRenderMarkdown(markdownElement) {
-  replaceMarkdownUrl(markdownElement);
+  replaceMarkdownURL(markdownElement);
   // 代码高亮、显示行号、添加按钮
   xkk1.highlightAll();
   // or
@@ -130,8 +132,8 @@ function renderMarkdown(markdown) {
 }
 
 // 生成 Markdown 解析显示 URL
-function generateMarkdownParseUrl() {
-  // const markdownParseUrl = "https://xkk1.github.io/MarkdownViewer/";
+function generateMarkdownParseURL() {
+  // const markdownParseURL = "https://xkk1.github.io/MarkdownViewer/";
   const searchParams = new URLSearchParams();
 
   const keys = ["md", "title", "target", "icon", "theme"];
@@ -143,18 +145,17 @@ function generateMarkdownParseUrl() {
   }
 
   const queryString = searchParams.toString();
-  return queryString ? `${markdownParseUrl}?${queryString}` : markdownParseUrl;
+  return queryString ? `${markdownParseURL}?${queryString}` : markdownParseURL;
 }
 
-function changeMarkdownParseUrl() {
-  let markdownParseUrl = generateMarkdownParseUrl();
-  let markdownParseUrlElement = document.getElementById("markdown-parse-url");
-  markdownParseUrlElement.href = markdownParseUrl;
-  markdownParseUrlElement.textContent = decodeURIComponent(markdownParseUrl);
+function changeMarkdownParseURL() {
+  let markdownParseURL = generateMarkdownParseURL();
+  let markdownParseURLElement = document.getElementById("markdown-parse-url");
+  markdownParseURLElement.href = markdownParseURL;
+  markdownParseURLElement.textContent = decodeURIComponent(markdownParseURL);
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
-  let markdownURL = currentUrlParams.get("md") || "README.md";
   fetch(markdownURL)
     .then(response => response.text())
     .then(markdown => renderMarkdown(markdown))
