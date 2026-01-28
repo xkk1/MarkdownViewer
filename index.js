@@ -16,6 +16,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+const params = new URLSearchParams(window.location.search);
+
 /**
  * Get the value of a specific query parameter from the URL.
  * 获取 URL 中指定参数的值。
@@ -23,7 +25,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * @return {string|null} The value of the query parameter, or null if not found. 参数值，如果没有找到则返回 null。
  */
 function getQueryVariable(paramName) {
-  const params = new URLSearchParams(window.location.search);
   return params.get(paramName); // 自动处理解码，若不存在则返回 null
 }
 
