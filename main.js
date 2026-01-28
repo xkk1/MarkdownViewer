@@ -20,8 +20,6 @@ import  { marked }  from 'marked';
 import { gfmHeadingId } from 'marked-gfm-heading-id';
 import xkk1 from './libs/xkk1/xkk1.js';
 
-console.log('marked', marked);
-console.log('marked-gfm-heading-id', gfmHeadingId);
 // 配置 marked
 marked.use(gfmHeadingId());
 // 初始化右侧按钮
