@@ -60,9 +60,11 @@ https://xkk1.github.io/MarkdownViewer/?md=Markdown文件URL&title=标题&target=
 \`\`\`
 `
 let replacementMarkdown = `
-\`${markdownParseUrl}?md=\`<input id="md-input" type="text" placeholder="Markdown文件URL" size="25" />\`&title=\`<input id="title-input" type="text" placeholder="标题" size="14" />\`&target=\`<input id="target-input" type="text" placeholder="_self" size="8" />\`&icon=\`<input id="icon-input" type="text" placeholder="https://xkk1.github.io/favicon.ico" size="25" />\`&theme=\`<input id="theme-input" type="text" placeholder="auto" size="5" />
+<div onkeydown="changeMarkdownParseUrl();">
+${markdownParseUrl}?md=<input id="md-input" type="text" placeholder="Markdown文件URL" size="25" />&title=<input id="title-input" type="text" placeholder="标题" size="14" />&target=<input id="target-input" type="text" placeholder="_self" size="8" />&icon=<input id="icon-input" type="text" placeholder="https://xkk1.github.io/favicon.ico" size="25" />&theme=<input id="theme-input" type="text" placeholder="auto" size="5" />
 
 <button type="button" onclick="changeMarkdownParseUrl();">生成 URL</button> <a id="markdown-parse-url" href="#" target="_blank"></a>
+</div>
 `;
 
 // 出错时显示的内容
@@ -191,14 +193,6 @@ function renderMarkdown(markdown) {
   afterRenderMarkdown(markdownElement);
 }
 
-document.addEventListener('DOMContentLoaded', (event) => {
-  let markdownURL = getQueryVariable("md") || "README.md";
-  fetch(markdownURL)
-    .then(response => response.text())
-    .then(markdown => renderMarkdown(markdown))
-    .catch(error => renderMarkdown(errorMarkdown.replace("{errorInfo}", error)));
-});
-
 // 生成 Markdown 解析显示 URL
 function generateMarkdownParseUrl() {
   let markdownParseUrlSearchStrings = ["md", "title", "target", "icon", "theme"];
@@ -214,7 +208,7 @@ function generateMarkdownParseUrl() {
   }
   let markdownParseUrlSearchsString = markdownParseUrlSearchs.join("&");
   if (markdownParseUrlSearchsString) {
-    markdownParseUrl += "?" + markdownParseUrlSearchsString;
+    return markdownParseUrl + "?" + markdownParseUrlSearchsString;
   };
   return markdownParseUrl;
 }
@@ -225,3 +219,11 @@ function changeMarkdownParseUrl() {
   markdownParseUrlElement.href = markdownParseUrl;
   markdownParseUrlElement.textContent = markdownParseUrl;
 }
+
+document.addEventListener('DOMContentLoaded', (event) => {
+  let markdownURL = getQueryVariable("md") || "README.md";
+  fetch(markdownURL)
+    .then(response => response.text())
+    .then(markdown => renderMarkdown(markdown))
+    .catch(error => renderMarkdown(errorMarkdown.replace("{errorInfo}", error)));
+});
