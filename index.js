@@ -79,27 +79,54 @@ const errorMarkdown = `# [错误]：获取 Markdown 失败
 function replaceMarkdownURL(markdownElement) {
   const markdownURLObject = new URL(markdownURL, currentURL);
   // 获取所有需要处理的标签
-  const links = markdownElement.querySelectorAll('a[href], img[src], script[src], iframe[src]');
-  links.forEach(el => {
-    let attrName = el.tagName === 'A' || el.tagName === 'AREA' ? 'href' : 'src';
-    let url = el.getAttribute(attrName);
+  const links = markdownElement.querySelectorAll('*[href], *[src]');
+  links.forEach(element => {
+    // 处理 href 属性
+    if (element.hasAttribute('href')) {
+      processReplaceMarkdownURLAttribute(element, 'href');
+    }
 
-    // 跳过空值和外部链接
+    // 处理 src 属性
+    if (element.hasAttribute('src')) {
+      processReplaceMarkdownURLAttribute(element, 'src');
+    }
+  });
+
+  function processReplaceMarkdownURLAttribute(element, attributeName) {
+    let url = element.getAttribute(attributeName);
+
+    // 跳过空值和页面锚点
     if (
       !url                       // 空
-      || url.startsWith('http')  // http:, https:
-      || url.startsWith('//')    // //
       || url.startsWith('#')     // 页面锚点
       || /^[a-z]+:/.test(url)    // mailto:, tel:, etc.
     ) {
       return;
     }
-    let absluteURL = new URL(url, markdownURLObject).href;
-    if (el[attrName] !== absluteURL) {
-      // 设置绝对路径替换原本错误的相对路径
-      el.setAttribute(attrName, absluteURL);
+    let absluteURLObject = new URL(url, markdownURLObject);
+    let absluteURL = absluteURLObject.href;
+    let newURL = "";
+    if (element[attributeName] !== absluteURL) {
+      newURL = absluteURL;
     }
-  });
+
+    let absluteURLPathname = absluteURLObject.pathname;
+    if (absluteURLPathname.endsWith('.md') || absluteURLPathname.endsWith('.markdown')) {
+      const mdParams = new URLSearchParams(currentURLParams);
+      for (const [key, value] of absluteURLObject.searchParams) {
+        mdParams.set(key, value);
+      }
+      mdParams.set("md", absluteURLObject.protocol + "//" + absluteURLObject.host + absluteURLObject.pathname);
+      if (element.tagName === 'A') {
+        mdParams.set('title', element.textContent);
+      }
+      newURL = `${markdownParseURL}?${mdParams.toString()}`;
+    }
+
+    if (newURL) {
+      element.setAttribute(attributeName, newURL);
+    }
+  }
 }
 
 // 渲染前
