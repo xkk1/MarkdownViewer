@@ -17,29 +17,19 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 const currentUrl = window.location.href;
-const params = new URLSearchParams(window.location.search);
-
-/**
- * Get the value of a specific query parameter from the URL.
- * 获取 URL 中指定参数的值。
- * @param {string} paramName - The name of the query parameter. 参数名称。
- * @return {string|null} The value of the query parameter, or null if not found. 参数值，如果没有找到则返回 null。
- */
-function getQueryVariable(paramName) {
-  return params.get(paramName); // 自动处理解码，若不存在则返回 null
-}
+const currentUrlParams = new URLSearchParams(window.location.search);
 
 // 修改标题
-document.title = getQueryVariable("title") || document.title;
+document.title = currentUrlParams.get("title") || document.title;
 
 // 设置超链接默认打开方式 
-let target = getQueryVariable("target") || "_self";
+let target = currentUrlParams.get("target") || "_self";
 let baseElement = document.createElement("base");
 baseElement.setAttribute("target", target);
 document.head.appendChild(baseElement);
 
 // 设置网页图标
-let icon = getQueryVariable("icon");
+let icon = currentUrlParams.get("icon");
 if (icon) {
   let link = document.createElement("link");
   link.rel = "icon";
@@ -48,7 +38,7 @@ if (icon) {
 }
 
 // 设置默认主题
-let theme = getQueryVariable("theme");
+let theme = currentUrlParams.get("theme");
 if (theme && localStorage.getItem("theme") === null) {
   localStorage.setItem("theme", theme);
 }
@@ -84,7 +74,7 @@ let errorMarkdown = `# [错误]：获取 Markdown 失败
  * 智能替换URL路径
  */
 function replaceMarkdownUrl(markdownElement) {
-  let markdownURL = new URL(getQueryVariable("md") || "README.md", currentUrl);
+  let markdownURL = new URL(currentUrlParams.get("md") || "README.md", currentUrl);
   // 获取所有需要处理的标签
   const links = markdownElement.querySelectorAll('a[href], img[src], script[src], iframe[src]');
   links.forEach(el => {
@@ -111,7 +101,7 @@ function replaceMarkdownUrl(markdownElement) {
 
 // 渲染前
 function beforeRenderMarkdown(markdown) {
-  let markdownURL = getQueryVariable("md") || "README.md";
+  let markdownURL = currentUrlParams.get("md") || "README.md";
   if (markdownURL === "README.md") {
     markdown = markdown.replace(patternMarkdown, replacementMarkdown);
   }
@@ -167,7 +157,7 @@ function changeMarkdownParseUrl() {
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
-  let markdownURL = getQueryVariable("md") || "README.md";
+  let markdownURL = currentUrlParams.get("md") || "README.md";
   fetch(markdownURL)
     .then(response => response.text())
     .then(markdown => renderMarkdown(markdown))
