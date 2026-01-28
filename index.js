@@ -131,22 +131,19 @@ function renderMarkdown(markdown) {
 
 // 生成 Markdown 解析显示 URL
 function generateMarkdownParseUrl() {
-  let markdownParseUrlSearchStrings = ["md", "title", "target", "icon", "theme"];
-  // "https://xkk1.github.io/MarkdownViewer/";
-  let markdownParseUrlSearchs = [];
-  for (let i = 0; i < markdownParseUrlSearchStrings.length; i++) {
-    let markdownParseUrlSearch = markdownParseUrlSearchStrings[i];
-    let markdownParseUrlSearchElement = document.getElementById(markdownParseUrlSearch + "-input");
-    if (markdownParseUrlSearchElement.value) {
-      markdownParseUrlSearchs.push(markdownParseUrlSearch + "=" + encodeURIComponent(markdownParseUrlSearchElement.value));
-    }
+  // const markdownParseUrl = "https://xkk1.github.io/MarkdownViewer/";
+  const searchParams = new URLSearchParams();
 
+  const keys = ["md", "title", "target", "icon", "theme"];
+  for (const key of keys) {
+    const inputElement = document.getElementById(`${key}-input`);
+    if (inputElement?.value) {
+      searchParams.append(key, inputElement.value);
+    }
   }
-  let markdownParseUrlSearchsString = markdownParseUrlSearchs.join("&");
-  if (markdownParseUrlSearchsString) {
-    return markdownParseUrl + "?" + markdownParseUrlSearchsString;
-  };
-  return markdownParseUrl;
+
+  const queryString = searchParams.toString();
+  return queryString ? `${markdownParseUrl}?${queryString}` : markdownParseUrl;
 }
 
 function changeMarkdownParseUrl() {
