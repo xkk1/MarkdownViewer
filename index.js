@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+const currentUrl = window.location.href;
 const params = new URLSearchParams(window.location.search);
 
 /**
@@ -79,81 +80,33 @@ let errorMarkdown = `# [错误]：获取 Markdown 失败
 ## 使用方法
 ` + replacementMarkdown;
 
-function replaceMarkdownPaths(markdown, baseUrl = 'https://xkk1.github.io/MarkdownViewer/') {
-  // 处理普通链接 [text](path)
-  let result = markdown.replace(/\[([^\]]*)\]\(([^)]+)\)/g, (match, text, path) => {
-    if (shouldSkipConversion(path)) {
-      return match;
+/*
+ * 智能替换URL路径
+ */
+function replaceMarkdownUrl(markdownElement) {
+  let markdownURL = new URL(getQueryVariable("md") || "README.md", currentUrl);
+  // 获取所有需要处理的标签
+  const links = markdownElement.querySelectorAll('a[href], img[src], script[src], iframe[src]');
+  links.forEach(el => {
+    let attrName = el.tagName === 'A' || el.tagName === 'AREA' ? 'href' : 'src';
+    let url = el.getAttribute(attrName);
+
+    // 跳过空值和外部链接
+    if (
+      !url                       // 空
+      || url.startsWith('http')  // http:, https:
+      || url.startsWith('//')    // //
+      || url.startsWith('#')     // 页面锚点
+      || /^[a-z]+:/.test(url)    // mailto:, tel:, etc.
+      ) {
+        return;
     }
-    return `[${text}](${buildFullUrl(baseUrl, path, text)})`;
+    let absluteUrl = new URL(url, markdownURL).href;
+    if (el[attrName] !== absluteUrl) {
+      // 设置绝对路径替换原本错误的相对路径
+      el.setAttribute(attrName, absluteUrl);
+    }
   });
-
-  // 处理图片链接 ![alt](path)
-  result = result.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, path) => {
-    if (shouldSkipConversion(path)) {
-      return match;
-    }
-    return `![${alt}](${buildFullUrl(baseUrl, path, alt)})`;
-  });
-
-  // 处理引用链接 [ref]: path
-  result = result.replace(/^\[([^\]]+)\]:\s*(\S+)/gm, (match, ref, path) => {
-    if (shouldSkipConversion(path)) {
-      return match;
-    }
-    return `[${ref}]: ${buildFullUrl(baseUrl, path, ref)}`;
-  });
-
-  // 处理尖括号 <path>
-  result = result.replace(/<([^>\s]+)>/g, (match, path) => {
-    if (!path.includes('.') || shouldSkipConversion(path)) {
-      return match;
-    }
-    return `<${buildFullUrl(baseUrl, path)}>`;
-  });
-
-  return result;
-}
-
-// 修改判断逻辑：只跳过真正的外部链接，不跳过以/开头的路径
-function shouldSkipConversion(path) {
-  return /^(https?:)?\/\//.test(path) ||  // http://, https://, //
-    /^[a-z]+:/.test(path) || // mailto:, tel:, etc.
-    path.startsWith('#');    // 页面锚点
-  // 移除了：path.startsWith('/') && !path.startsWith('//')
-  // 这样以/开头的路径也会被替换
-}
-
-function buildFullUrl(baseUrl, relativePath, title = null) {
-  let fullUrl = buildFullUrlNormal(baseUrl, relativePath);
-  // 判断链接类型是 markdown 文件
-  let clearRelativePath = relativePath.split('#')[0].split('?')[0];
-  if (clearRelativePath.endsWith('.md')) {
-    fullUrl = `${markdownParseUrl}?md=${encodeURIComponent(fullUrl)}`
-    // 添加标题参数
-    if (title) {
-      fullUrl += `&title=${encodeURIComponent(title)}`;
-    }
-  }
-  return fullUrl;
-}
-
-function buildFullUrlNormal(baseUrl, relativePath) {
-  if (!baseUrl) return relativePath;
-  if (baseUrl.startsWith('https://') || baseUrl.startsWith('http://')) {
-    try {
-      let url = new URL(relativePath, baseUrl);
-      return url.toString();
-    } catch (error) {}
-  }
-  let clearRelativePath = relativePath;
-  if (relativePath.startsWith('/')) {
-    return relativePath;
-  } else if (clearRelativePath.startsWith('./')) {
-    clearRelativePath = clearRelativePath.substring(2);
-  }
-  
-  return baseUrl + clearRelativePath;
 }
 
 // 渲染前
@@ -161,20 +114,13 @@ function beforeRenderMarkdown(markdown) {
   let markdownURL = getQueryVariable("md") || "README.md";
   if (markdownURL === "README.md") {
     markdown = markdown.replace(patternMarkdown, replacementMarkdown);
-  } else if (markdownURL.includes("/")) {
-    let baseUrl = markdownURL.substring(0, markdownURL.lastIndexOf("/")) + "/";
-    if (baseUrl.startsWith("//")) {
-      baseUrl = window.location.protocol + baseUrl;
-    }
-    markdown = replaceMarkdownPaths(markdown, baseUrl);
-  } else {
-    markdown = replaceMarkdownPaths(markdown, "");
   }
   return markdown;
 }
 
 // 渲染完成后
 function afterRenderMarkdown(markdownElement) {
+  replaceMarkdownUrl(markdownElement);
   // 代码高亮、显示行号、添加按钮
   xkk1.highlightAll();
   // or
