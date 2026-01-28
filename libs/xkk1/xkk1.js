@@ -16,6 +16,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import hljs from 'highlight.js';
+
 const xkk1 = function () {
 };
 
@@ -288,3 +290,5 @@ xkk1.initNavRightButtons = function (xkk1IconPath = "img/svg-icons.svg") {
   // 初始化深浅主题切换按钮
   xkk1.initThemeToggleButton(xkk1IconPath);
 };
+
+export default xkk1;

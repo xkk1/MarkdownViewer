@@ -22,24 +22,32 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Markdown Viewer</title>
-  <!-- marked -->
-  <!-- <script src="./libs/marked/marked.umd.js"></script> -->
-  <script src="https://unpkg.com/marked@^17/lib/marked.umd.js"></script>
-  <!-- marked-gfm-heading-id -->
-  <!-- <script src="./libs/marked-gfm-heading-id/index.umd.js"></script> -->
-  <script src="https://unpkg.com/marked-gfm-heading-id@^4/lib/index.umd.js"></script>
-  <script>marked.use(markedGfmHeadingId.gfmHeadingId());</script>
-  <!-- highlight.js -->
-  <!-- <script src="./libs/highlightjs/highlight.min.js"></script> -->
-  <script src="https://unpkg.com/@highlightjs/cdn-assets@^11/highlight.min.js"></script>
+  <!-- 本地引入 -->
+  <!-- <script type="importmap">
+    {
+      "imports": {
+        "marked": "./libs/marked/marked.esm.js",
+        "marked-gfm-heading-id": "./libs/marked-gfm-heading-id/index.js",
+        "highlight.js": "./libs/highlightjs/es/highlight.min.js"
+      }
+    }
+  </script> -->
+  <!-- CDN 引入 -->
+  <script type="importmap">
+    {
+      "imports": {
+        "marked": "https://unpkg.com/marked@^17?module",
+        "marked-gfm-heading-id": "https://unpkg.com/marked-gfm-heading-id@^4?module",
+        "highlight.js": "https://unpkg.com/@highlightjs/cdn-assets@^11/es/highlight.min.js"
+      }
+    }
+  </script>
   <!-- highlight.js vscode theme 可替换其他 highlight.js 主题样式 -->
   <link rel="stylesheet" href="./libs/xkk1/css/xkk1-highlightjs-vscode-theme.css">
   <!-- xkk1 主题 可替换 -->
   <link rel="stylesheet" href="./libs/xkk1/css/xkk1.css">
-  <!-- xkk1 代码高亮 / 右侧按钮 / 深浅主题切换 非必需 -->
-  <script src="./libs/xkk1/xkk1.js"></script>
   <!-- 加载并渲染动态内容，必须 -->
-  <script src="./index.js"></script>
+  <script type="module" src="./main.js"></script>
 </head>
 
 <body>
@@ -53,10 +61,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
     <!-- 深色、浅色模式切换 -->
     <div id="theme-toggle-button"></div>
   </div>
-  <script>
-    // 初始化右侧按钮
-    xkk1.initNavRightButtons('./libs/xkk1/img/svg-icons.svg');
-  </script>
 </body>
 
 </html>

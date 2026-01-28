@@ -16,6 +16,17 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import  { marked }  from 'marked';
+import { gfmHeadingId } from 'marked-gfm-heading-id';
+import xkk1 from './libs/xkk1/xkk1.js';
+
+console.log('marked', marked);
+console.log('marked-gfm-heading-id', gfmHeadingId);
+// 配置 marked
+marked.use(gfmHeadingId());
+// 初始化右侧按钮
+xkk1.initNavRightButtons('./libs/xkk1/img/svg-icons.svg');
+
 const currentURL = window.location.href;
 const currentURLParams = new URLSearchParams(window.location.search);
 
@@ -50,7 +61,7 @@ const markdownParseURL = window.location.protocol + "//" + window.location.host 
 // 替换默认显示的内容
 const patternMarkdown = `
 \`\`\`plaintext
-https://xkk1.github.io/MarkdownViewer/?md=Markdown文件URL&title=标题&target=_self&icon=网页图标URL&theme=默认主题
+https://xkk1.github.io/web-markdown-viewer/?md=Markdown文件URL&title=标题&target=_self&icon=网页图标URL&theme=默认主题
 \`\`\`
 `
 const replacementMarkdown = `
@@ -160,7 +171,7 @@ function renderMarkdown(markdown) {
 
 // 生成 Markdown 解析显示 URL
 function generateMarkdownParseURL() {
-  // const markdownParseURL = "https://xkk1.github.io/MarkdownViewer/";
+  // const markdownParseURL = "https://xkk1.github.io/web-markdown-viewer/";
   const searchParams = new URLSearchParams();
 
   const keys = ["md", "title", "target", "icon", "theme"];
@@ -181,10 +192,9 @@ function changeMarkdownParseURL() {
   markdownParseURLElement.href = markdownParseURL;
   markdownParseURLElement.textContent = decodeURIComponent(markdownParseURL);
 }
+window.changeMarkdownParseURL = changeMarkdownParseURL;
 
-document.addEventListener('DOMContentLoaded', (event) => {
-  fetch(markdownURL)
-    .then(response => response.text())
-    .then(markdown => renderMarkdown(markdown))
-    .catch(error => renderMarkdown(errorMarkdown.replace("{errorInfo}", error)));
-});
+fetch(markdownURL)
+  .then(response => response.text())
+  .then(markdown => renderMarkdown(markdown))
+  .catch(error => renderMarkdown(errorMarkdown.replace("{errorInfo}", error)));
