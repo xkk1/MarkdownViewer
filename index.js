@@ -153,7 +153,7 @@ function changeMarkdownParseUrl() {
   let markdownParseUrl = generateMarkdownParseUrl();
   let markdownParseUrlElement = document.getElementById("markdown-parse-url");
   markdownParseUrlElement.href = markdownParseUrl;
-  markdownParseUrlElement.textContent = markdownParseUrl;
+  markdownParseUrlElement.textContent = decodeURIComponent(markdownParseUrl);
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
