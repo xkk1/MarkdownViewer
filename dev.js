@@ -22,64 +22,57 @@ marked.use(gfmHeadingId())
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// 当前工作目录作为站点根目录
-const ROOT = process.cwd()
-const PORT = 3000
+export function createServer({
+  root = process.cwd(),
+  enableMarkdown = true,
+} = {}) {
+  return http.createServer(async (req, res) => {
+    // log info
+    console.log(`${req.method} ${req.url}`)
+    try {
+      const urlPath = decodeURIComponent(req.url.split('?')[0])
+      const safePath = path.normalize(urlPath).replace(/^(\.\.[/\\])+/, '')
+      let filePath = path.join(root, safePath)
 
-const server = http.createServer(async (req, res) => {
-  // log info
-  console.log(`${req.method} ${req.url}`)
-  try {
-    const urlPath = decodeURIComponent(req.url.split('?')[0])
-    const safePath = path.normalize(urlPath).replace(/^(\.\.[/\\])+/, '')
-    let filePath = path.join(ROOT, safePath)
-
-    // 目录默认 index.html
-    if (filePath.endsWith(path.sep)) {
-      filePath += 'index.html'
-    }
-
-    // 1️⃣ 如果 html 存在，直接返回
-    if (filePath.endsWith('.html')) {
-      try {
-        const html = await fs.readFile(filePath, 'utf-8')
-        sendHTML(res, html)
-        return
-      } catch {
-        // html 不存在，继续尝试 md
+      // 目录默认 index.html
+      if (filePath.endsWith(path.sep)) {
+        filePath += 'index.html'
       }
 
-      // 2️⃣ 尝试同名 md
-      const mdPath = filePath.replace(/\.html$/, '.md')
-      try {
-        const md = await fs.readFile(mdPath, 'utf-8')
-        const content = marked.parse(md)
+      // 1️⃣ 如果 html 存在，直接返回
+      if (filePath.endsWith('.html')) {
+        try {
+          const html = await fs.readFile(filePath, 'utf-8')
+          return sendHTML(res, html)
+        } catch {}
 
-        const templatePath = path.join(ROOT, 'template.html')
-        const template = await fs.readFile(templatePath, 'utf-8')
+        if (enableMarkdown) {
+          // 2️⃣ 尝试同名 md
+          const mdPath = filePath.replace(/\.html$/, '.md')
+          try {
+            const md = await fs.readFile(mdPath, 'utf-8')
+            const content = marked.parse(md)
 
-        const html = template.replace('{{content}}', content)
-        sendHTML(res, html)
-        return
-      } catch {
-        send404(res)
-        return
+            const templatePath = path.join(root, 'template.html')
+            const template = await fs.readFile(templatePath, 'utf-8')
+
+            const html = template.replace('{{content}}', content)
+            return sendHTML(res, html)
+          } catch {}
+        }
+
+        return send404(res)
       }
+
+      // 3️⃣ 普通静态文件
+      const data = await fs.readFile(filePath)
+      sendFile(res, data, getContentType(filePath))
+    } catch (err) {
+      console.error(err)
+      send500(res)
     }
-
-    // 3️⃣ 普通静态文件
-    const data = await fs.readFile(filePath)
-    sendFile(res, data, getContentType(filePath))
-  } catch (err) {
-    console.error(err)
-    send500(res)
-  }
-})
-
-server.listen(PORT, () => {
-  console.log(`🚀 Dev server running at http://localhost:${PORT}`)
-  console.log(`📂 Serving: ${ROOT}`)
-})
+  })
+}
 
 function sendHTML(res, html) {
   res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
@@ -121,4 +114,16 @@ function getContentType(filePath) {
     '.markdown': 'text/markdown',
     '.txt': 'text/plain',
   }[ext] || 'application/octet-stream'
+}
+
+/* ================= CLI 直接运行支持 ================= */
+
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const PORT = 3000
+  const root = process.cwd()
+  const server = createServer({ root, enableMarkdown: true })
+  server.listen(PORT, () => {
+    console.log(`🚀 Dev server: http://localhost:${PORT}`)
+    console.log(`📂 Serving: ${root}`)
+  })
 }

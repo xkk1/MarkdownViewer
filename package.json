@@ -1,11 +1,13 @@
 {
   "name": "web-markdown-viewer",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "type": "module",
   "description": "纯前端项目，能够解析并显示给定 URL 上的 Markdown 文件内容",
   "module": "main.js",
   "scripts": {
     "dev": "node dev.js",
+    "build": "node build.js",
+    "preview": "node preview.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

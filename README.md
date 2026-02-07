@@ -61,6 +61,40 @@ https://xkk1.github.io/web-markdown-viewer/?md=Markdown文件URL&title=标题&ta
 4.  在浏览器中打开以下 URL：  
     <http://localhost:8000/>
 
+### 方案二：使用 npm build 构建并预览
+
+本项目也支持通过 npm 脚本将 Markdown 文件预渲染为静态 HTML，适合部署到 GitHub Pages、Cloudflare Pages 等静态托管平台。
+
+1. 安装依赖：
+
+   ```sh
+   npm install
+   ```
+
+2. 构建静态文件：
+
+   ```sh
+   npm run build
+   ```
+
+   构建完成后会生成 `dist/` 目录：
+
+   * 自动复制项目中的所有文件
+   * 将 `dist` 目录下**没有同名 `.html` 的 `.md` 文件**渲染为 `.html`
+
+3. 本地预览构建结果：
+
+   ```sh
+   npm run preview
+   ```
+
+   然后在浏览器中访问：
+
+   [http://localhost:4173/](http://localhost:4173/)
+
+该方式适合将 Markdown 文档作为**静态站点**发布，无需运行时解析 Markdown。
+
+
 ## 贡献
 
 欢迎任何形式的贡献！请 fork 本项目并提交 Pull Request。
