@@ -1,0 +1,30 @@
+{
+  "name": "web-markdown-viewer",
+  "version": "2.0.0",
+  "type": "module",
+  "description": "纯前端项目，能够解析并显示给定 URL 上的 Markdown 文件内容",
+  "module": "main.js",
+  "scripts": {
+    "dev": "node dev.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xkk1/web-markdown-viewer.git"
+  },
+  "keywords": [
+    "Markdown",
+    "Web"
+  ],
+  "author": "xkk",
+  "license": "GPL-3.0-or-later",
+  "packageManager": "pnpm@10.28.2",
+  "bugs": {
+    "url": "https://github.com/xkk1/web-markdown-viewer/issues"
+  },
+  "homepage": "https://xkk1.github.io/web-markdown-viewer/",
+  "dependencies": {
+    "marked": "^17",
+    "marked-gfm-heading-id": "^4"
+  }
+}
