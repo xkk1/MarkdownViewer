@@ -1,35 +1,45 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8" />
   <title>Markdown Preview</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body {
-      margin: 0;
-      padding: 2rem;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #fafafa;
-      color: #222;
+  <!-- 本地引入 -->
+  <!-- <script type="importmap">
+    {
+      "imports": {
+        "highlight.js": "./libs/highlightjs/es/highlight.min.js"
+      }
     }
-    main {
-      max-width: 860px;
-      margin: auto;
+  </script> -->
+  <!-- CDN 引入 -->
+  <script type="importmap">
+    {
+      "imports": {
+        "highlight.js": "https://unpkg.com/@highlightjs/cdn-assets@^11/es/highlight.min.js"
+      }
     }
-    pre {
-      background: #1e1e1e;
-      color: #eee;
-      padding: 1rem;
-      overflow-x: auto;
-    }
-    code {
-      font-family: monospace;
-    }
-  </style>
+  </script>
+  <!-- highlight.js vscode theme 可替换其他 highlight.js 主题样式 -->
+  <link rel="stylesheet" href="/libs/xkk1/css/xkk1-highlightjs-vscode-theme.css">
+  <!-- xkk1 主题 可替换 -->
+  <link rel="stylesheet" href="/libs/xkk1/css/xkk1.css">
+  <!-- 替换 url .md 为 .html 和代码高亮 -->
+  <script type="module" src="/template.js"></script>
 </head>
+
 <body>
-  <main>
-    {{content}}
+  <main class="main">
+    <div id="markdown" class="markdown">{{content}}</div>
   </main>
+  <!-- 右侧按钮 -->
+  <div id="nav-right-buttons">
+    <!-- 返回顶部 -->
+    <div id="back-to-top-button"></div>
+    <!-- 深色、浅色模式切换 -->
+    <div id="theme-toggle-button"></div>
+  </div>
 </body>
+
 </html>

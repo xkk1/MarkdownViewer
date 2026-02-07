@@ -18,3 +18,6 @@ node_modules/
 /libs/**/*
 !/libs/xkk1/
 !/libs/xkk1/**/*
+
+# build
+/dist/**/*
