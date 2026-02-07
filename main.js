@@ -20,11 +20,6 @@ import  { marked }  from 'marked';
 import { gfmHeadingId } from 'marked-gfm-heading-id';
 import xkk1 from './libs/xkk1/xkk1.js';
 
-// 配置 marked
-marked.use(gfmHeadingId());
-// 初始化右侧按钮
-xkk1.initNavRightButtons('./libs/xkk1/img/svg-icons.svg');
-
 const currentURL = window.location.href;
 const currentURLParams = new URLSearchParams(window.location.search);
 
@@ -81,6 +76,11 @@ const errorMarkdown = `# [错误]：获取 Markdown 失败
 
 ## 使用方法
 ` + replacementMarkdown;
+
+// 配置 marked
+marked.use(gfmHeadingId());
+// 初始化右侧按钮
+xkk1.initNavRightButtons('./libs/xkk1/img/svg-icons.svg');
 
 /*
  * 智能替换URL路径
