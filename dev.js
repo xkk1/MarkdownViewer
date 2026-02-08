@@ -27,6 +27,10 @@ export function createServer({
   root = process.cwd(),
   enableMarkdown = true,
 } = {}) {
+  // web-markdown-viewer project root path
+  const webMarkdownViewerPath = path.join(root, path.relative(root, __dirname))
+  console.log('web-markdown-viewer Path:', webMarkdownViewerPath)
+  const templatePath = path.join(webMarkdownViewerPath, 'template.html')
   return http.createServer(async (req, res) => {
     // log info
     console.log(`${req.method} ${req.url}`)
@@ -54,10 +58,9 @@ export function createServer({
             const md = await fs.readFile(mdPath, 'utf-8')
             const content = marked.parse(md)
 
-            const templatePath = path.join(root, 'template.html')
             const template = await fs.readFile(templatePath, 'utf-8')
 
-            const relativePath = path.relative(path.dirname(mdPath), root) || '.';
+            const relativePath = path.relative(path.dirname(mdPath), webMarkdownViewerPath) || '.';
             const html = template.replaceAll('{{relativePath}}', relativePath).replace('{{content}}', content)
             return sendHTML(res, html)
           } catch {}
