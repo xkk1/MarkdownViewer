@@ -60,11 +60,18 @@ async function renderMarkdownInDist() {
     try {
       await fs.access(htmlPath)
       return // 已存在同名 html，跳过
-    } catch {}
+    } catch { }
 
     const md = await fs.readFile(filePath, 'utf-8')
     const content = marked.parse(md)
-    const relativePath = path.relative(path.dirname(filePath), webMarkdownViewerPath) || '.';
+    let relativePath = path.relative(path.dirname(filePath), webMarkdownViewerPath);
+    if (relativePath) {
+      if (!relativePath.startsWith('.')) {
+        relativePath = './' + relativePath
+      }
+    } else {
+      relativePath = '.'
+    }
     const html = template.replaceAll('{{relativePath}}', relativePath).replace('{{content}}', content)
 
     await fs.writeFile(htmlPath, html)
