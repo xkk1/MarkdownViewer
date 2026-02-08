@@ -122,11 +122,12 @@ function replaceMarkdownURL(markdownElement) {
     let absluteURLPathname = absluteURLObject.pathname;
     if (absluteURLPathname.endsWith('.md') || absluteURLPathname.endsWith('.markdown')) {
       const mdParams = new URLSearchParams(currentURLParams);
+      mdParams.delete("title");
       for (const [key, value] of absluteURLObject.searchParams) {
         mdParams.set(key, value);
       }
       mdParams.set("md", absluteURLObject.protocol + "//" + absluteURLObject.host + absluteURLObject.pathname);
-      if (element.tagName === 'A') {
+      if (!mdParams.has('title') && element.tagName === 'A') {
         mdParams.set('title', element.textContent);
       }
       newURL = `${markdownParseURL}?${mdParams.toString()}`;
