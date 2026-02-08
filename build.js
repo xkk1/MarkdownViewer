@@ -39,6 +39,7 @@ async function copyDir(src, dest) {
   for (const entry of entries) {
     if (entry.name === 'dist') continue
     if (entry.name === 'node_modules') continue
+    if (entry.name === '.git') continue
 
     const srcPath = path.join(src, entry.name)
     const destPath = path.join(dest, entry.name)
