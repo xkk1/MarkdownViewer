@@ -80,7 +80,7 @@ const errorMarkdown = `# [错误]：获取 Markdown 失败
 // 配置 marked
 marked.use(gfmHeadingId());
 // 初始化右侧按钮
-xkk1.initNavRightButtons('./libs/xkk1/img/svg-icons.svg');
+xkk1.initNavRightButtons(new URL('./libs/xkk1/img/svg-icons.svg', import.meta.url).href);
 
 /*
  * 智能替换URL路径
