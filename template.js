@@ -34,7 +34,7 @@ let markdownElement = document.getElementById("markdown");
 markdownElement.style.whiteSpace = 'initial';
 
 // 初始化右侧按钮
-xkk1.initNavRightButtons('/libs/xkk1/img/svg-icons.svg');
+xkk1.initNavRightButtons(`${relativePath}/libs/xkk1/img/svg-icons.svg`);
 
 /*
  * 智能替换URL路径 .md / .markdown -> .html
