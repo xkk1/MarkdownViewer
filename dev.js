@@ -49,7 +49,7 @@ export function createServer({
         try {
           const html = await fs.readFile(filePath, 'utf-8')
           return sendHTML(res, html)
-        } catch {}
+        } catch { }
 
         if (enableMarkdown) {
           // 2️⃣ 尝试同名 md
@@ -60,10 +60,17 @@ export function createServer({
 
             const template = await fs.readFile(templatePath, 'utf-8')
 
-            const relativePath = path.relative(path.dirname(mdPath), webMarkdownViewerPath) || '.';
+            let relativePath = path.relative(path.dirname(mdPath), webMarkdownViewerPath);
+            if (relativePath) {
+              if (!relativePath.startsWith('.')) {
+                relativePath = './' + relativePath
+              }
+            } else {
+              relativePath = '.'
+            }
             const html = template.replaceAll('{{relativePath}}', relativePath).replace('{{content}}', content)
             return sendHTML(res, html)
-          } catch {}
+          } catch { }
         }
 
         return send404(res)
