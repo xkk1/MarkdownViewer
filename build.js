@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 // 使用本地的 marked
 // import { marked } from './libs/marked/marked.esm.js'
@@ -8,6 +9,9 @@ import path from 'node:path'
 // 使用 npm 安装的 marked
 import { marked } from "marked";
 import { gfmHeadingId } from "marked-gfm-heading-id";
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // 配置 marked
 marked.use(gfmHeadingId())
@@ -55,8 +59,9 @@ async function renderMarkdownInDist() {
     } catch {}
 
     const md = await fs.readFile(filePath, 'utf-8')
+    const relativePath = path.relative(filePath, __dirname) || '.';
     const content = marked.parse(md)
-    const html = template.replace('{{content}}', content)
+    const html = template.replaceAll('{{relativePath}}', relativePath).replace('{{content}}', content)
 
     await fs.writeFile(htmlPath, html)
     console.log(`📝 Rendered: ${path.relative(DIST, htmlPath)}`)
