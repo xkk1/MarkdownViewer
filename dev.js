@@ -50,7 +50,6 @@ export function createServer({
         if (enableMarkdown) {
           // 2️⃣ 尝试同名 md
           const mdPath = filePath.replace(/\.html$/, '.md')
-          const relativePath = path.relative(mdPath, __dirname) || '.';
           try {
             const md = await fs.readFile(mdPath, 'utf-8')
             const content = marked.parse(md)
@@ -58,6 +57,7 @@ export function createServer({
             const templatePath = path.join(root, 'template.html')
             const template = await fs.readFile(templatePath, 'utf-8')
 
+            const relativePath = path.relative(path.dirname(mdPath), root) || '.';
             const html = template.replaceAll('{{relativePath}}', relativePath).replace('{{content}}', content)
             return sendHTML(res, html)
           } catch {}
