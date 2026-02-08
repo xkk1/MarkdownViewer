@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 // 使用本地的 marked
 // import { marked } from './libs/marked/marked.esm.js'
@@ -9,17 +10,24 @@ import path from 'node:path'
 import { marked } from "marked";
 import { gfmHeadingId } from "marked-gfm-heading-id";
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
 // 配置 marked
 marked.use(gfmHeadingId())
 
-const ROOT = process.cwd()
-const DIST = path.join(ROOT, 'dist')
-const TEMPLATE_PATH = path.join(DIST, 'template.html')
+const distName = 'dist'
+const root = process.cwd()
+const dist = path.join(root, distName)
+// web-markdown-viewer project root path
+const webMarkdownViewerPath = path.join(root, distName, path.relative(root, __dirname))
+console.log('web-markdown-viewer dist Path:', webMarkdownViewerPath)
+const templatePath = path.join(webMarkdownViewerPath, 'template.html')
 
 async function build() {
   console.log('📦 Building...')
-  await fs.rm(DIST, { recursive: true, force: true })
-  await copyDir(ROOT, DIST)
+  await fs.rm(dist, { recursive: true, force: true })
+  await copyDir(root, dist)
   await renderMarkdownInDist()
   console.log('✅ Build finished')
 }
@@ -44,8 +52,8 @@ async function copyDir(src, dest) {
 }
 
 async function renderMarkdownInDist() {
-  const template = await fs.readFile(TEMPLATE_PATH, 'utf-8')
-  await walk(DIST, async (filePath) => {
+  const template = await fs.readFile(templatePath, 'utf-8')
+  await walk(dist, async (filePath) => {
     if (!filePath.endsWith('.md')) return
 
     const htmlPath = filePath.replace(/\.md$/, '.html')
@@ -56,11 +64,11 @@ async function renderMarkdownInDist() {
 
     const md = await fs.readFile(filePath, 'utf-8')
     const content = marked.parse(md)
-    const relativePath = path.relative(path.dirname(filePath), DIST) || '.';
+    const relativePath = path.relative(path.dirname(filePath), webMarkdownViewerPath) || '.';
     const html = template.replaceAll('{{relativePath}}', relativePath).replace('{{content}}', content)
 
     await fs.writeFile(htmlPath, html)
-    console.log(`📝 Rendered: ${path.relative(DIST, htmlPath)}`)
+    console.log(`📝 Rendered: ${path.relative(dist, htmlPath)}`)
   })
 }
 
