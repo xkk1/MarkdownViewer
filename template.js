@@ -65,23 +65,26 @@ function processReplaceMarkdownURLAttribute(element, attributeName) {
     return;
   }
   let newURL = url.replace(/\.(md|markdown)(\?.*|#.*)?$/, '.html$2');
-  if (element.tagName === 'A') {
-    let absluteURLObject = new URL(newURL, currentURL);
-    let absluteURL = absluteURLObject.href;
-    const mdParams = new URLSearchParams(currentURLParams);
-    for (const [key, value] of absluteURLObject.searchParams) {
-      mdParams.set(key, value);
-    }
+  if (url === newURL) {
+    return;
+  }
+  
+  let absluteURLObject = new URL(newURL, currentURL);
+  let absluteURL = absluteURLObject.href;
+  const mdParams = new URLSearchParams(currentURLParams);
+  mdParams.delete("title");
+  for (const [key, value] of absluteURLObject.searchParams) {
+    mdParams.set(key, value);
+  }
+  if (!mdParams.has('title') && element.tagName === 'A') {
     mdParams.set('title', element.textContent);
-    newURL = absluteURLObject.origin + absluteURLObject.pathname + '?' + mdParams.toString();
-    if (absluteURLObject.hash) {
-      newURL += absluteURLObject.hash;
-    }
   }
-
-  if (url !== newURL) {
-    element.setAttribute(attributeName, newURL);
+  newURL = absluteURLObject.origin + absluteURLObject.pathname + '?' + mdParams.toString();
+  if (absluteURLObject.hash) {
+    newURL += absluteURLObject.hash;
   }
+  
+  element.setAttribute(attributeName, newURL);
 }
 
 // 代码高亮、显示行号、添加按钮
